@@ -1,29 +1,24 @@
+import "module-alias/register";
+
 import path from "node:path";
 import { parseArgs } from "node:util";
 import knex from "knex";
-
-type DbConfig = {
-  host: string;
-  port: number;
-  user: string;
-  password: string;
-  dbName: string;
-};
+import type { PostgresConfig } from "app/config/config";
 
 const config = {
   options: {
-    action: { type: 'string', short: 'a' },
+    action: { type: "string", short: "a" },
   },
 } as const;
 
 const init = async () => {
-  const cfg: DbConfig = {
+  const cfg: PostgresConfig = {
     host: process.env.POSTGRES_HOST ?? "localhost",
-    port: Number(process.env.POSTGRES_PORT) ?? 5432,
+    port: Number(process.env.POSTGRES_PORT ?? 5432),
     user: process.env.POSTGRES_USER ?? "postgres",
     password: process.env.POSTGRES_PASSWORD ?? "",
     dbName: process.env.POSTGRES_DB ?? "compass",
-  }
+  };
 
   const conn = knex({
     client: "pg",
@@ -37,35 +32,36 @@ const init = async () => {
     migrations: {
       directory: path.resolve("dist/migrations/postgres"),
     },
-  })
+  });
 
   try {
     const { values } = parseArgs(config);
 
     switch (values.action) {
       case "up":
-        await conn.migrate.up()
-        break
+        await conn.migrate.up();
+        break;
       case "down":
-        await conn.migrate.down()
-        break
+        await conn.migrate.down();
+        break;
       case "latest":
-        await conn.migrate.latest()
+        await conn.migrate.latest();
+        break;
       case undefined:
       case "":
-        console.log("-a cannot be empty")
-        return
+        console.log("-a cannot be empty");
+        return;
       default:
-        console.log("possible actions is: up or down")
-        return
+        console.log("possible actions is: up or down");
+        return;
     }
 
-    console.log("successful migration")
+    console.log("successful migration");
   } catch (err: unknown) {
-    console.log(err)
+    console.log(err);
   } finally {
-    await conn.destroy()
+    await conn.destroy();
   }
-}
+};
 
-init()
+init();

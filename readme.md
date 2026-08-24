@@ -1,6 +1,15 @@
 # Compass backend
 
+## Старт
+
+Создать .env и прописать туда переменные окружения из .env.example  
+Запуск через docker compose  
+docker compose -f deployment/docker-compose.dev.yaml up --build
+
 ## Миграции
-docker compose -f deployment/docker-compose.dev.yaml run --rm migrator -a up
-docker compose -f deployment/docker-compose.dev.yaml run --rm migrator -a down
-docker compose -f deployment/docker-compose.dev.yaml run --rm migrator -a latest
+
+Применить одну - docker compose -f deployment/docker-compose.dev.yaml run --rm migrator -a up  
+Откатить одну - docker compose -f deployment/docker-compose.dev.yaml run --rm migrator -a down  
+Применить все - docker compose -f deployment/docker-compose.dev.yaml run --rm migrator -a latest
+
+Если не тянутся новые миграции в контейнер - надо пересобрать его: docker compose -f deployment/docker-compose.dev.yaml run --build --rm migrator -a up

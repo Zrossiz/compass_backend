@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
 
     create table if not exists specialities (
       id serial not null primary key,
-      profession_id integer references professions(id) not null on delete cascade,
+      profession_id integer not null references professions(id) on delete cascade,
       title varchar(255) not null,
       description text not null,
       created_at timestamptz default now()
@@ -34,35 +34,35 @@ export async function up(knex: Knex): Promise<void> {
 
     create table if not exists profession_interviews (
       id serial not null primary key,
-      profession_id integer references professions(id) not null on delete cascade,
+      profession_id integer not null references professions(id) on delete cascade,
       title varchar(255) not null,
       video_link varchar(255) not null,
-      order integer not null,
+      "order" integer not null,
       created_at timestamptz default now()
     );
 
     create table if not exists speciality_interviews (
       id serial not null primary key,
-      speciality_id integer references specialities(id) not null on delete cascade,
+      speciality_id integer not null references specialities(id) on delete cascade,
       title varchar(255) not null,
       video_link varchar(255) not null,
-      order integer not null,
+      sort_order integer not null,
       created_at timestamptz default now()
     );
 
     create table if not exists speciality_tracks (
       id serial not null primary key,
-      speciality_id integer references specialities(id) not null on delete cascade,
+      speciality_id integer not null references specialities(id) on delete cascade,
       title varchar(255) not null,
       image_link varchar(255) not null,
-      order integer not null,
+      sort_order integer not null,
       created_at timestamptz default now()
     );
 
     create table if not exists speciality_universities (
       id serial not null primary key,
-      speciality_id integer references specialities(id) not null on delete cascade,
-      university_id integer references universities(id) not null on delete cascade,
+      speciality_id integer not null references specialities(id) on delete cascade,
+      university_id integer not null references universities(id) on delete cascade,
       unique (speciality_id, university_id)
     );
   `);
