@@ -5,13 +5,8 @@ services:
     build:
       context: ..
       dockerfile: build/Dockerfile
-    environment:
-      PORT: 9000
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: compass
+    env_file:
+      - ../.env
     ports:
       - "9000:9000"
     restart: unless-stopped

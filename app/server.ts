@@ -1,8 +1,8 @@
 import "module-alias/register";
 
-import { app } from "app/app";
+import { createApp } from "app/app";
 import { newConfig } from "app/config/config";
-import { newPgConn, newPostgres, PgConnection } from "app/repository/postgres";
+import { newPgConn, PgConnection, Postgres } from "app/repository/postgres";
 import { newLogger } from "app/logger/logger";
 import { Server } from "node:http";
 
@@ -16,7 +16,8 @@ let isShuttingDown = false;
 const main = async (): Promise<void> => {
   try {
     pgConn = await newPgConn(config.pg);
-    const pgRepo = newPostgres(pgConn);
+    const pgRepo = new Postgres(pgConn);
+    const app = createApp(pgRepo);
 
     const server = app.listen(config.app.port, config.app.host, () => {
       logger.info(`Server is running at ${config.app.host}:${config.app.port}`);

@@ -39,5 +39,3 @@ export class Postgres implements Repository {
     return this.connection.transaction(handler);
   }
 }
-
-export const newPostgres = (conn: PgConnection): Postgres => new Postgres(conn);
