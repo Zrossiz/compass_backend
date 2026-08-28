@@ -1,6 +1,6 @@
 import type { CookieOptions, NextFunction, Request, Response } from 'express';
 import type { IUserService } from 'app/service/service';
-import { UnauthorizedError, UsernameAlreadyExistsError } from 'app/errors/user';
+import { UnauthorizedError, UsernameAlreadyExistsError, UserNotFoundError, InvalidUsernameOrPassword } from 'app/errors/user';
 import { InvalidBodyError } from 'app/errors/validation';
 import type { JwtTokens } from 'app/model/user';
 import { UserDTO, UserRes } from './dto/user';
@@ -33,6 +33,20 @@ export class UserHandler {
       this.setAuthCookies(res, userWithTokens.tokens);
       res.status(201).json(registrationRes);
     } catch (err: unknown) {
+      if (err instanceof InvalidBodyError) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (
+        err instanceof UnauthorizedError ||
+        err instanceof InvalidUsernameOrPassword ||
+        err instanceof UserNotFoundError
+      ) {
+        res.status(401).json({ error: 'Invalid username or password' });
+        return;
+      }
+
       if (err instanceof UsernameAlreadyExistsError) {
         res.status(409).json({ error: err.message });
         return;

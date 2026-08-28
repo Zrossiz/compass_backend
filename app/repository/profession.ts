@@ -6,7 +6,7 @@ type ProfessionRow = {
   id: number;
   title: string;
   description: string;
-  createdAt: Date;
+  created_at: Date;
 };
 
 export class ProfessionRepo implements IProfessionRepository {
@@ -28,6 +28,6 @@ export class ProfessionRepo implements IProfessionRepository {
     id: row.id,
     title: row.title,
     description: row.description,
-    createdAt: row.createdAt,
+    createdAt: row.created_at,
   });
 }

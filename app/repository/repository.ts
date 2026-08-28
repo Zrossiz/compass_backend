@@ -11,7 +11,7 @@ export interface IProfessionRepository {
   getById(id: number): Promise<Profession | null>;
 }
 
-export interface Repository {
+export interface IRepository {
   readonly users: IUserRepository;
   readonly professions: IProfessionRepository;
 }

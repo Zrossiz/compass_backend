@@ -1,5 +1,5 @@
 import type { PostgresConfig } from 'app/config/config';
-import type { Repository } from 'app/repository/repository';
+import type { IRepository } from 'app/repository/repository';
 import { UserRepo } from 'app/repository/user';
 import knex, { type Knex } from 'knex';
 import { ProfessionRepo } from 'app/repository/profession';
@@ -29,7 +29,7 @@ export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
   return conn;
 };
 
-export class Postgres implements Repository {
+export class Postgres implements IRepository {
   readonly users: UserRepo;
   readonly professions: ProfessionRepo;
 

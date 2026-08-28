@@ -42,11 +42,17 @@ export const newConfig = (): Config => {
     logger: process.env.LOGGER_LEVEL ?? 'info',
     jwt: {
       accessLifetime: process.env.ACCESS_LIFETIME ?? '5m',
-      accessSecret: process.env.ACCESS_SECRET ?? '123MKLas',
+      accessSecret: process.env.ACCESS_SECRET ?? '',
       refreshLifetime: process.env.REFRESH_LIFETIME ?? '24h',
-      refreshSecret: process.env.REFRESH_SECRET ?? '123MKLas123',
+      refreshSecret: process.env.REFRESH_SECRET ?? '',
     },
   };
+
+  if (appConfig.env === 'production') {
+    if (!process.env.ACCESS_SECRET || !process.env.REFRESH_SECRET) {
+      throw new Error('JWT secrets are required in production');
+    }
+  }
 
   const config: Config = {
     pg: pgConfig,
