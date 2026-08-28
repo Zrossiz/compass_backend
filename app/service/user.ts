@@ -1,5 +1,5 @@
 import type { JwtTokens, UserJWTPayload, UserWithJwtTokens } from 'app/model/user';
-import type { UserRepository } from 'app/repository/repository';
+import type { IUserRepository } from 'app/repository/repository';
 import type { IUserService } from './service';
 import bcrypt from 'bcrypt';
 import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';
@@ -14,7 +14,7 @@ import jwt, { type SignOptions } from 'jsonwebtoken';
 
 export class UserService implements IUserService {
   constructor(
-    private readonly usersRepo: UserRepository,
+    private readonly usersRepo: IUserRepository,
     private readonly cfg: Config,
   ) {}
 

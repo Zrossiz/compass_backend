@@ -1,5 +1,5 @@
 import type { User } from 'app/model/user';
-import type { UserRepository } from 'app/repository/repository';
+import type { IUserRepository } from 'app/repository/repository';
 import type { Knex } from 'knex';
 
 type UserRow = {
@@ -10,7 +10,7 @@ type UserRow = {
   updated_at: Date;
 };
 
-export class UserRepo implements UserRepository {
+export class UserRepo implements IUserRepository {
   constructor(private readonly pgConn: Knex) {}
 
   async create(username: string, password: string): Promise<User> {

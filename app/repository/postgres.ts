@@ -2,6 +2,7 @@ import type { PostgresConfig } from 'app/config/config';
 import type { Repository } from 'app/repository/repository';
 import { UserRepo } from 'app/repository/user';
 import knex, { type Knex } from 'knex';
+import { ProfessionRepo } from 'app/repository/profession';
 
 export type PgConnection = Knex;
 
@@ -30,9 +31,11 @@ export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
 
 export class Postgres implements Repository {
   readonly users: UserRepo;
+  readonly professions: ProfessionRepo;
 
   constructor(private readonly connection: PgConnection) {
     this.users = new UserRepo(connection);
+    this.professions = new ProfessionRepo(connection);
   }
 
   transaction<T>(handler: (trx: Knex.Transaction) => Promise<T>): Promise<T> {

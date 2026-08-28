@@ -3,8 +3,10 @@
 ## Старт
 
 Создать .env и прописать туда переменные окружения из .env.example  
-Запуск через docker compose  
-docker compose -f deployment/docker-compose.dev.yaml up --build
+Запуск приложения
+./develop/start.sh
+Остановить приложение
+./develop/stop.sh
 
 ## Миграции
 

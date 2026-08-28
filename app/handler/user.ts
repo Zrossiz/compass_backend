@@ -70,9 +70,9 @@ export class UserHandler {
     try {
       const refreshToken = req.cookies['refreshToken'];
 
-      if (refreshToken == "" || typeof refreshToken != "string") {
-        throw new UnauthorizedError()
-      };
+      if (refreshToken == '' || typeof refreshToken != 'string') {
+        throw new UnauthorizedError();
+      }
 
       const tokens = this.userService.refresh(refreshToken);
 
@@ -80,9 +80,9 @@ export class UserHandler {
 
       res.status(200).json();
     } catch (err) {
-      next(err)
+      next(err);
     }
-  }
+  };
 
   private setAuthCookies(res: Response, tokens: JwtTokens): void {
     const cookieOptions: CookieOptions = {
