@@ -7,10 +7,11 @@ import express, {
   type Response,
 } from "express";
 import { Handler } from "app/handler/handler";
+import type { Config } from "app/config/config";
 
-export const createApp = (repository: Repository) => {
+export const createApp = (repository: Repository, config: Config) => {
   const app = express();
-  const userHandler = new UserHandler(new UserService(repository.users));
+  const userHandler = new UserHandler(new UserService(repository.users, config));
 
   app.use(express.json());
 

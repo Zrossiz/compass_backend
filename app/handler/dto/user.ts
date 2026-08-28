@@ -9,3 +9,9 @@ export const UserDTO = z.object({
       message: "Password must be at most 72 bytes",
     }),
 });
+
+export type UserRes = {
+  id: number;
+  username: string;
+  createdAt: Date;
+}

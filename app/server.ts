@@ -17,7 +17,7 @@ const main = async (): Promise<void> => {
   try {
     pgConn = await newPgConn(config.pg);
     const pgRepo = new Postgres(pgConn);
-    const app = createApp(pgRepo);
+    const app = createApp(pgRepo, config);
 
     const server = app.listen(config.app.port, config.app.host, () => {
       logger.info(`Server is running at ${config.app.host}:${config.app.port}`);

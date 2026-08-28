@@ -1,4 +1,4 @@
-export const isUniqueViolation = (error: unknown): boolean =>
+export const isUniquePgErrViolation = (error: unknown): boolean =>
   typeof error === "object" &&
   error !== null &&
   "code" in error &&

@@ -15,7 +15,15 @@ export type AppConfig = {
   host: string;
   port: number;
   logger: string;
+  jwt: JwtConfig;
 };
+
+export type JwtConfig = {
+  accessLifetime: string;
+  accessSecret: string;
+  refreshLifetime: string;
+  refreshSecret: string;
+}
 
 export const newConfig = (): Config => {
   const pgConfig: PostgresConfig = {
@@ -30,6 +38,12 @@ export const newConfig = (): Config => {
     host: process.env.APP_HOST ?? "localhost",
     port: Number(process.env.APP_PORT ?? 9000),
     logger: process.env.LOGGER_LEVEL ?? "info",
+    jwt: {
+      accessLifetime: process.env.ACCESS_LIFETIME ?? "5m",
+      accessSecret: process.env.ACCESS_SECRET ?? "123MKLas",
+      refreshLifetime: process.env.REFRESH_LIFETIME ?? "24h",
+      refreshSecret: process.env.REFRESH_SECRET ?? "123MKLas123",
+    }
   };
 
   const config: Config = {
