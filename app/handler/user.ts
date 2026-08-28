@@ -1,17 +1,13 @@
-import type { NextFunction, Request, Response } from "express";
-import type { IUserService } from "app/service/service";
-import { UsernameAlreadyExistsError } from "app/errors/user";
-import { InvalidBodyError } from "app/errors/validation";
-import { UserDTO, UserRes } from "./dto/user";
+import type { NextFunction, Request, Response } from 'express';
+import type { IUserService } from 'app/service/service';
+import { UsernameAlreadyExistsError } from 'app/errors/user';
+import { InvalidBodyError } from 'app/errors/validation';
+import { UserDTO, UserRes } from './dto/user';
 
 export class UserHandler {
   constructor(private readonly userService: IUserService) {}
 
-  registration = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
+  registration = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const parsed = UserDTO.safeParse(req.body);
     if (!parsed.success) {
       throw new InvalidBodyError();
@@ -27,7 +23,7 @@ export class UserHandler {
         id: userWithTokens.user.id,
         username: userWithTokens.user.username,
         createdAt: userWithTokens.user.createdAt,
-      }
+      };
 
       res.status(201).json(registrationRes);
     } catch (err: unknown) {
@@ -39,11 +35,7 @@ export class UserHandler {
     }
   };
 
-  login = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
+  login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const parsed = UserDTO.safeParse(req.body);
     if (!parsed.success) {
       throw new InvalidBodyError();
@@ -59,7 +51,7 @@ export class UserHandler {
         id: userWithTokens.user.id,
         username: userWithTokens.user.username,
         createdAt: userWithTokens.user.createdAt,
-      }
+      };
 
       res.status(201).json(loginRes);
     } catch (err) {

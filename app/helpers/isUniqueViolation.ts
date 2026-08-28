@@ -1,5 +1,2 @@
 export const isUniquePgErrViolation = (error: unknown): boolean =>
-  typeof error === "object" &&
-  error !== null &&
-  "code" in error &&
-  error.code === "23505";
+  typeof error === 'object' && error !== null && 'code' in error && error.code === '23505';

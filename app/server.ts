@@ -1,10 +1,10 @@
-import "module-alias/register";
+import 'module-alias/register';
 
-import { createApp } from "app/app";
-import { newConfig } from "app/config/config";
-import { newPgConn, PgConnection, Postgres } from "app/repository/postgres";
-import { newLogger } from "app/logger/logger";
-import { Server } from "node:http";
+import { createApp } from 'app/app';
+import { newConfig } from 'app/config/config';
+import { newPgConn, PgConnection, Postgres } from 'app/repository/postgres';
+import { newLogger } from 'app/logger/logger';
+import { Server } from 'node:http';
 
 const config = newConfig();
 
@@ -23,8 +23,8 @@ const main = async (): Promise<void> => {
       logger.info(`Server is running at ${config.app.host}:${config.app.port}`);
     });
 
-    process.once("SIGINT", () => void shutdown("SIGINT", server));
-    process.once("SIGTERM", () => void shutdown("SIGTERM", server));
+    process.once('SIGINT', () => void shutdown('SIGINT', server));
+    process.once('SIGTERM', () => void shutdown('SIGTERM', server));
   } catch (error) {
     if (pgConn) {
       await pgConn.destroy();
@@ -33,19 +33,16 @@ const main = async (): Promise<void> => {
   }
 };
 
-const shutdown = async (
-  signal: NodeJS.Signals,
-  server: Server,
-): Promise<void> => {
+const shutdown = async (signal: NodeJS.Signals, server: Server): Promise<void> => {
   if (isShuttingDown) return;
   isShuttingDown = true;
 
-  logger.info({ signal }, "Graceful shutdown started");
+  logger.info({ signal }, 'Graceful shutdown started');
 
   try {
     server.close();
   } catch (error: unknown) {
-    logger.error({ error }, "Failed to close HTTP server");
+    logger.error({ error }, 'Failed to close HTTP server');
     process.exitCode = 1;
   }
 
@@ -54,14 +51,14 @@ const shutdown = async (
       await pgConn.destroy();
     }
   } catch (error: unknown) {
-    logger.error({ error }, "Failed to close PostgreSQL connection");
+    logger.error({ error }, 'Failed to close PostgreSQL connection');
     process.exitCode = 1;
   }
 
-  logger.info("Graceful shutdown completed");
+  logger.info('Graceful shutdown completed');
 };
 
 main().catch((error: unknown) => {
-  logger.fatal({ error }, "Failed to start server");
+  logger.fatal({ error }, 'Failed to start server');
   process.exitCode = 1;
 });

@@ -1,13 +1,13 @@
-import type { PostgresConfig } from "app/config/config";
-import type { Repository } from "app/repository/repository";
-import { UserRepo } from "app/repository/user";
-import knex, { type Knex } from "knex";
+import type { PostgresConfig } from 'app/config/config';
+import type { Repository } from 'app/repository/repository';
+import { UserRepo } from 'app/repository/user';
+import knex, { type Knex } from 'knex';
 
 export type PgConnection = Knex;
 
 export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
   const conn = knex({
-    client: "pg",
+    client: 'pg',
     connection: {
       host: cfg.host,
       port: cfg.port,
@@ -23,7 +23,7 @@ export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
     },
   });
 
-  await conn.raw("select 1");
+  await conn.raw('select 1');
 
   return conn;
 };

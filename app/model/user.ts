@@ -19,4 +19,4 @@ export type UserWithJwtTokens = {
 export type UserJWTPayload = {
   id: number;
   username: string;
-}
+};
