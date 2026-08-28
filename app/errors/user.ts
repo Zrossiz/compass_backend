@@ -5,6 +5,13 @@ export class UsernameAlreadyExistsError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  constructor() {
+    super('Unauthorized');
+    this.name = 'UnauthorizedError';
+  }
+}
+
 export class UserNotFoundError extends Error {
   constructor() {
     super('User not found');

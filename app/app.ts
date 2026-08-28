@@ -4,12 +4,14 @@ import { UserService } from 'app/service/user';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { Handler } from 'app/handler/handler';
 import type { Config } from 'app/config/config';
+import cookieParser from 'cookie-parser';
 
 export const createApp = (repository: Repository, config: Config) => {
   const app = express();
-  const userHandler = new UserHandler(new UserService(repository.users, config));
+  const userHandler = new UserHandler(new UserService(repository.users, config), config.app);
 
   app.use(express.json());
+  app.use(cookieParser());
 
   const handler = new Handler(app, userHandler);
   handler.registerRoutes();

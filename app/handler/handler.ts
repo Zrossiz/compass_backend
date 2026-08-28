@@ -14,6 +14,9 @@ export class Handler {
     this.app.get('/health', (_req, res) => {
       res.status(200).json({ status: 'ok' });
     });
+
     this.app.post('/api/v1/users/register', this.userHandler.registration);
+    this.app.post('/api/v1/users/login', this.userHandler.login);
+    this.app.post('/api/v1/users/refresh', this.userHandler.refresh);
   }
 }

@@ -1,10 +1,11 @@
-import type { UserWithJwtTokens, JwtTokens, User, UserJWTPayload } from 'app/model/user';
+import type { JwtTokens, UserJWTPayload, UserWithJwtTokens } from 'app/model/user';
 import type { UserRepository } from 'app/repository/repository';
 import type { IUserService } from './service';
 import bcrypt from 'bcrypt';
 import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';
 import {
   InvalidUsernameOrPassword,
+  UnauthorizedError,
   UsernameAlreadyExistsError,
   UserNotFoundError,
 } from 'app/errors/user';
@@ -21,7 +22,12 @@ export class UserService implements IUserService {
     try {
       const passwordHash = await bcrypt.hash(password, 12);
       const user = await this.usersRepo.create(username, passwordHash);
-      const tokens = this.generateTokens(user);
+
+      const jwtPayload: UserJWTPayload = {
+        id: user.id,
+        username: user.username,
+      };
+      const tokens = this.generateTokens(jwtPayload);
 
       const res: UserWithJwtTokens = { user, tokens };
 
@@ -40,12 +46,16 @@ export class UserService implements IUserService {
       throw new UserNotFoundError();
     }
 
-    const isMatch = await bcrypt.compare(password, user?.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       throw new InvalidUsernameOrPassword();
     }
 
-    const tokens = this.generateTokens(user);
+    const jwtPayload: UserJWTPayload = {
+      id: user.id,
+      username: user.username,
+    };
+    const tokens = this.generateTokens(jwtPayload);
 
     const res: UserWithJwtTokens = {
       user,
@@ -55,12 +65,35 @@ export class UserService implements IUserService {
     return res;
   }
 
-  private generateTokens(user: User): JwtTokens {
-    const payload: UserJWTPayload = {
-      id: user.id,
-      username: user.username,
+  refresh(refreshToken: string): JwtTokens {
+    let decoded: jwt.JwtPayload | string;
+
+    try {
+      decoded = jwt.verify(refreshToken, this.cfg.app.jwt.refreshSecret);
+    } catch (err: unknown) {
+      if (err instanceof jwt.JsonWebTokenError) {
+        throw new UnauthorizedError();
+      }
+      throw err;
+    }
+
+    if (
+      typeof decoded === 'string' ||
+      typeof decoded.id !== 'number' ||
+      typeof decoded.username !== 'string'
+    ) {
+      throw new UnauthorizedError();
+    }
+
+    const jwtPayload: UserJWTPayload = {
+      id: decoded.id,
+      username: decoded.username,
     };
 
+    return this.generateTokens(jwtPayload);
+  }
+
+  private generateTokens(user: UserJWTPayload): JwtTokens {
     const accessOptions: SignOptions = {
       expiresIn: this.cfg.app.jwt.accessLifetime as SignOptions['expiresIn'],
     };
@@ -69,8 +102,8 @@ export class UserService implements IUserService {
     };
 
     const tokens: JwtTokens = {
-      access: jwt.sign(payload, this.cfg.app.jwt.accessSecret, accessOptions),
-      refresh: jwt.sign(payload, this.cfg.app.jwt.refreshSecret, refreshOptions),
+      access: jwt.sign(user, this.cfg.app.jwt.accessSecret, accessOptions),
+      refresh: jwt.sign(user, this.cfg.app.jwt.refreshSecret, refreshOptions),
     };
 
     return tokens;

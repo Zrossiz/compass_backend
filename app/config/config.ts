@@ -15,6 +15,7 @@ export type AppConfig = {
   host: string;
   port: number;
   logger: string;
+  env: string;
   jwt: JwtConfig;
 };
 
@@ -36,6 +37,7 @@ export const newConfig = (): Config => {
 
   const appConfig: AppConfig = {
     host: process.env.APP_HOST ?? 'localhost',
+    env: process.env.APP_ENV ?? 'dev',
     port: Number(process.env.APP_PORT ?? 9000),
     logger: process.env.LOGGER_LEVEL ?? 'info',
     jwt: {
