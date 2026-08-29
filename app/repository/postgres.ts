@@ -1,8 +1,16 @@
 import type { PostgresConfig } from 'app/config/config';
-import type { IRepository } from 'app/repository/repository';
+import type {
+  IProfessionInterviewRepository,
+  IRepository,
+  ISpecialityInterviewRepository,
+  ISpecialityRepository,
+} from 'app/repository/interface';
 import { UserRepo } from 'app/repository/user';
 import knex, { type Knex } from 'knex';
 import { ProfessionRepo } from 'app/repository/profession';
+import { ProfessionInterviewRepo } from 'app/repository/professionInterview';
+import { SpecialityInterview } from 'app/repository/speciality';
+import { SpecialityInterviewRepo } from 'app/repository/specialityInterview';
 
 export type PgConnection = Knex;
 
@@ -32,10 +40,16 @@ export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
 export class Postgres implements IRepository {
   readonly users: UserRepo;
   readonly professions: ProfessionRepo;
+  readonly professionInterviews: IProfessionInterviewRepository;
+  readonly speciality: ISpecialityRepository;
+  readonly specialityInterviews: ISpecialityInterviewRepository;
 
   constructor(private readonly connection: PgConnection) {
     this.users = new UserRepo(connection);
     this.professions = new ProfessionRepo(connection);
+    this.professionInterviews = new ProfessionInterviewRepo(connection);
+    this.speciality = new SpecialityInterview(connection);
+    this.specialityInterviews = new SpecialityInterviewRepo(connection);
   }
 
   transaction<T>(handler: (trx: Knex.Transaction) => Promise<T>): Promise<T> {

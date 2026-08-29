@@ -1,5 +1,5 @@
 import type { JwtTokens, UserJWTPayload, UserWithJwtTokens } from 'app/model/user';
-import type { IUserRepository } from 'app/repository/repository';
+import type { IUserRepository } from 'app/repository/interface';
 import type { IUserService } from './service';
 import bcrypt from 'bcrypt';
 import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';

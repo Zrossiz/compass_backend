@@ -2,7 +2,7 @@ import type { JwtTokens, UserWithJwtTokens } from 'app/model/user';
 import type { Profession } from 'app/model/profession';
 import { UserService } from 'app/service/user';
 import { Config } from 'app/config/config';
-import { IRepository } from 'app/repository/repository';
+import { IRepository } from 'app/repository/interface';
 
 export interface IUserService {
   registration(username: string, password: string): Promise<UserWithJwtTokens>;

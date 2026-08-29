@@ -1,6 +1,11 @@
 import type { CookieOptions, NextFunction, Request, Response } from 'express';
 import type { IUserService } from 'app/service/service';
-import { UnauthorizedError, UsernameAlreadyExistsError, UserNotFoundError, InvalidUsernameOrPassword } from 'app/errors/user';
+import {
+  UnauthorizedError,
+  UsernameAlreadyExistsError,
+  UserNotFoundError,
+  InvalidUsernameOrPassword,
+} from 'app/errors/user';
 import { InvalidBodyError } from 'app/errors/validation';
 import type { JwtTokens } from 'app/model/user';
 import { UserDTO, UserRes } from './dto/user';

@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
     create table if not exists users (
       id serial not null primary key,
-      username varchar(40) not null unique, 
+      username varchar(40) not null unique,
       password varchar(255) not null,
       created_at timestamptz default now(),
       updated_at timestamptz default now()
@@ -37,7 +37,7 @@ export async function up(knex: Knex): Promise<void> {
       profession_id integer not null references professions(id) on delete cascade,
       title varchar(255) not null,
       video_link varchar(255) not null,
-      "order" integer not null,
+      sort_order integer not null,
       created_at timestamptz default now()
     );
 
