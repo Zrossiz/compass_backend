@@ -12,7 +12,7 @@ type SpecialityRow = {
   created_at: Date;
 };
 
-export class SpecialityInterview implements ISpecialityRepository {
+export class SpecialityRepo implements ISpecialityRepository {
   constructor(private readonly pgConn: Knex) {}
 
   async create(payload: CreateSpecialityDTO): Promise<void> {

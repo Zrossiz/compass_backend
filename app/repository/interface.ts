@@ -7,6 +7,9 @@ import { CreateSpecialityDTO } from 'app/types/speciality';
 import { Speciality } from 'app/model/speciality';
 import { SpecialityInterview } from 'app/model/specialityInterview';
 import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';
+import { University } from 'app/model/university';
+import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { SpecialityTrack } from 'app/model/specialityTrack';
 
 export interface IRepository {
   readonly users: IUserRepository;
@@ -14,6 +17,9 @@ export interface IRepository {
   readonly professionInterviews: IProfessionInterviewRepository;
   readonly speciality: ISpecialityRepository;
   readonly specialityInterviews: ISpecialityInterviewRepository;
+  readonly specialityTrack: ISpecialityTrackRepository;
+  readonly university: IUniversityRepository;
+  readonly specialityUniversity: ISpecialityUniversityRepository;
 }
 
 export interface IUserRepository {
@@ -40,4 +46,18 @@ export interface ISpecialityInterviewRepository {
 export interface ISpecialityRepository {
   create(payload: CreateSpecialityDTO): Promise<void>;
   search(pattern: string, pagination: Pagination): Promise<Speciality[]>;
+}
+
+export interface ISpecialityTrackRepository {
+  create(payload: CreateSpecialityTrackDTO): Promise<void>;
+  getAllBySpecialityId(id: number): Promise<SpecialityTrack[]>;
+}
+
+export interface IUniversityRepository {
+  create(title: string, region: string): Promise<void>;
+  getAllBySpecialityId(id: number): Promise<University[]>;
+}
+
+export interface ISpecialityUniversityRepository {
+  create(specialityId: number, universityId: number): Promise<void>;
 }

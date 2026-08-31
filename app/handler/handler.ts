@@ -1,5 +1,5 @@
 import type { Express } from 'express';
-import { UserHandler } from './user';
+import { UserHandler } from 'app/handler/user';
 import { IService } from 'app/service/service';
 import { Config } from 'app/config/config';
 import { errorMiddleware } from 'app/middleware/error';

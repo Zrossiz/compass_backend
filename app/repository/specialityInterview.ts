@@ -19,13 +19,13 @@ export class SpecialityInterviewRepo implements ISpecialityInterviewRepository {
       speciality_id: payload.specialityId,
       title: payload.title,
       video_link: payload.videoLink,
-      order: payload.order,
+      sort_order: payload.order,
     });
   }
 
   async getAllBySpecialityId(id: number): Promise<SpecialityInterview[]> {
     const rows = await this.pgConn<SpecialityInterviewRow>('speciality_interviews')
-      .select('id', 'speciality_id', 'title', 'link', 'order')
+      .select('id', 'speciality_id', 'title', 'video_link', 'sort_order')
       .where('speciality_id', id)
       .orderBy('sort_order', 'desc');
 

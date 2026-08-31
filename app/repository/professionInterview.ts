@@ -18,14 +18,14 @@ export class ProfessionInterviewRepo implements IProfessionInterviewRepository {
     await this.pgConn('profession_interviews').insert({
       profession_id: payload.professionId,
       title: payload.title,
-      link: payload.videoLink,
+      video_link: payload.videoLink,
       sort_order: payload.order,
     });
   }
 
   async getAllByProfessionId(id: number): Promise<ProfessionInterview[]> {
     const rows = await this.pgConn<ProfessionInterviewRow>('profession_interviews')
-      .select('id', 'profession_id', 'title', 'link', 'order')
+      .select('id', 'profession_id', 'title', 'video_link', 'sort_order')
       .where('profession_id', id)
       .orderBy('sort_order', 'desc');
 

@@ -8,7 +8,7 @@ import {
 } from 'app/errors/user';
 import { InvalidBodyError } from 'app/errors/validation';
 import type { JwtTokens } from 'app/model/user';
-import { UserDTO, UserRes } from './dto/user';
+import { UserDTO, UserRes } from 'app/handler/dto/user';
 import { AppConfig } from 'app/config/config';
 
 export class UserHandler {

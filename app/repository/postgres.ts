@@ -4,13 +4,19 @@ import type {
   IRepository,
   ISpecialityInterviewRepository,
   ISpecialityRepository,
+  ISpecialityTrackRepository,
+  ISpecialityUniversityRepository,
+  IUniversityRepository,
 } from 'app/repository/interface';
 import { UserRepo } from 'app/repository/user';
 import knex, { type Knex } from 'knex';
 import { ProfessionRepo } from 'app/repository/profession';
 import { ProfessionInterviewRepo } from 'app/repository/professionInterview';
-import { SpecialityInterview } from 'app/repository/speciality';
+import { SpecialityRepo } from 'app/repository/speciality';
 import { SpecialityInterviewRepo } from 'app/repository/specialityInterview';
+import { UniversityRepo } from 'app/repository/university';
+import { SpecialityTrackRepo } from 'app/repository/specialityTrack';
+import { SpecialityUniversityRepo } from 'app/repository/specialityUniversity';
 
 export type PgConnection = Knex;
 
@@ -43,13 +49,19 @@ export class Postgres implements IRepository {
   readonly professionInterviews: IProfessionInterviewRepository;
   readonly speciality: ISpecialityRepository;
   readonly specialityInterviews: ISpecialityInterviewRepository;
+  readonly specialityTrack: ISpecialityTrackRepository;
+  readonly university: IUniversityRepository;
+  readonly specialityUniversity: ISpecialityUniversityRepository;
 
   constructor(private readonly connection: PgConnection) {
     this.users = new UserRepo(connection);
     this.professions = new ProfessionRepo(connection);
     this.professionInterviews = new ProfessionInterviewRepo(connection);
-    this.speciality = new SpecialityInterview(connection);
+    this.speciality = new SpecialityRepo(connection);
     this.specialityInterviews = new SpecialityInterviewRepo(connection);
+    this.university = new UniversityRepo(connection);
+    this.specialityTrack = new SpecialityTrackRepo(connection);
+    this.specialityUniversity = new SpecialityUniversityRepo(connection);
   }
 
   transaction<T>(handler: (trx: Knex.Transaction) => Promise<T>): Promise<T> {
