@@ -1,7 +1,7 @@
 import { UserWithJwtTokens } from 'app/model/user';
 import { JwtTokens } from 'app/model/user';
 import { Profession } from 'app/model/profession';
-import { Pagination } from 'app/types/pagination';
+import { PaginatedResult, Pagination } from 'app/types/pagination';
 
 export interface IUserService {
   registration(username: string, password: string): Promise<UserWithJwtTokens>;
@@ -12,9 +12,10 @@ export interface IUserService {
 export interface IProfessionService {
   create(title: string, description: string): Promise<void>;
   getById(id: number): Promise<Profession | null>;
-  search(pattern: string, pagination: Pagination): Promise<Profession[]>;
+  search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>>;
 }
 
 export interface IService {
-  readonly users: IUserService;
+  readonly user: IUserService;
+  readonly profession: IProfessionService;
 }

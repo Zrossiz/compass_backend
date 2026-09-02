@@ -1,6 +1,6 @@
 import { Speciality } from 'app/model/speciality';
 import { ISpecialityRepository } from 'app/repository/postgres/interface';
-import { Pagination } from 'app/types/pagination';
+import { PaginatedResult, Pagination } from 'app/types/pagination';
 import { CreateSpecialityDTO } from 'app/types/speciality';
 import { Knex } from 'knex';
 
@@ -23,22 +23,35 @@ export class SpecialityRepo implements ISpecialityRepository {
     });
   }
 
-  async search(pattern: string, pagination: Pagination): Promise<Speciality[]> {
+  async search(
+    pattern: string,
+    pagination: Pagination,
+  ): Promise<PaginatedResult<Speciality>> {
     const searchPattern = pattern.trim();
 
-    if (!searchPattern) {
-      return [];
-    }
+    const match = `%${searchPattern}%`;
+    const applySearch = (query: Knex.QueryBuilder) =>
+      query.where((builder) => {
+        builder.whereILike('title', match).orWhereILike('description', match);
+      });
 
-    const rows = await this.pgConn<SpecialityRow>('specialities')
-      .select('id', 'profession_id', 'title', 'description', 'created_at')
-      .whereILike('title', `%${searchPattern}%`)
-      .orWhereILike('description', `%${searchPattern}%`)
-      .orderBy('id')
-      .limit(pagination.limit)
-      .offset(pagination.offset);
+    const [rows, countRow] = await Promise.all([
+      applySearch(this.pgConn<SpecialityRow>('specialities'))
+        .select('id', 'profession_id', 'title', 'description', 'created_at')
+        .orderBy('id')
+        .limit(pagination.limit)
+        .offset(pagination.offset),
+      applySearch(this.pgConn('specialities'))
+        .count<{ total: string }>({ total: '*' })
+        .first(),
+    ]);
 
-    return rows.map(this.toSpeciality);
+    const total = Number(countRow?.total ?? 0);
+
+    return {
+      items: rows.map(this.toSpeciality),
+      totalPages: Math.ceil(total / pagination.limit),
+    };
   }
 
   toSpeciality(row: SpecialityRow): Speciality {

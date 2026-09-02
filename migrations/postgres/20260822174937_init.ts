@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
 
     create table if not exists professions (
       id serial not null primary key,
-      title varchar(255) not null,
+      title varchar(255) not null unique,
       description text not null,
       created_at timestamptz default now()
     );

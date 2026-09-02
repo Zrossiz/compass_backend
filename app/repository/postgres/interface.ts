@@ -1,6 +1,6 @@
 import type { User } from 'app/model/user';
 import type { Profession } from 'app/model/profession';
-import { Pagination } from 'app/types/pagination';
+import { PaginatedResult, Pagination } from 'app/types/pagination';
 import { CreateProfessionInterviewDTO } from 'app/types/professionInterview';
 import { ProfessionInterview } from 'app/model/professionInterview';
 import { CreateSpecialityDTO } from 'app/types/speciality';
@@ -12,11 +12,11 @@ import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { SpecialityTrack } from 'app/model/specialityTrack';
 
 export interface IRepository {
-  readonly users: IUserRepository;
-  readonly professions: IProfessionRepository;
-  readonly professionInterviews: IProfessionInterviewRepository;
+  readonly user: IUserRepository;
+  readonly profession: IProfessionRepository;
+  readonly professionInterview: IProfessionInterviewRepository;
   readonly speciality: ISpecialityRepository;
-  readonly specialityInterviews: ISpecialityInterviewRepository;
+  readonly specialityInterview: ISpecialityInterviewRepository;
   readonly specialityTrack: ISpecialityTrackRepository;
   readonly university: IUniversityRepository;
   readonly specialityUniversity: ISpecialityUniversityRepository;
@@ -30,7 +30,7 @@ export interface IUserRepository {
 export interface IProfessionRepository {
   create(title: string, description: string): Promise<void>;
   getById(id: number): Promise<Profession | null>;
-  search(pattern: string, pagination: Pagination): Promise<Profession[]>;
+  search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>>;
 }
 
 export interface IProfessionInterviewRepository {
@@ -45,7 +45,7 @@ export interface ISpecialityInterviewRepository {
 
 export interface ISpecialityRepository {
   create(payload: CreateSpecialityDTO): Promise<void>;
-  search(pattern: string, pagination: Pagination): Promise<Speciality[]>;
+  search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Speciality>>;
 }
 
 export interface ISpecialityTrackRepository {

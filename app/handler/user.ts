@@ -17,7 +17,7 @@ export class UserHandler {
     private readonly appCfg: AppConfig,
   ) {}
 
-  registration = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  async registration(req: Request, res: Response, next: NextFunction): Promise<void> {
     const parsed = UserDTO.safeParse(req.body);
     if (!parsed.success) {
       throw new InvalidBodyError();
@@ -58,9 +58,9 @@ export class UserHandler {
       }
       next(err);
     }
-  };
+  }
 
-  login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     const parsed = UserDTO.safeParse(req.body);
     if (!parsed.success) {
       throw new InvalidBodyError();
@@ -83,9 +83,9 @@ export class UserHandler {
     } catch (err) {
       next(err);
     }
-  };
+  }
 
-  refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const refreshToken = req.cookies['refreshToken'];
 
@@ -101,7 +101,7 @@ export class UserHandler {
     } catch (err) {
       next(err);
     }
-  };
+  }
 
   private setAuthCookies(res: Response, tokens: JwtTokens): void {
     const cookieOptions: CookieOptions = {

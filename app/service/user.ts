@@ -2,11 +2,9 @@ import type { JwtTokens, UserJWTPayload, UserWithJwtTokens } from 'app/model/use
 import type { IUserRepository } from 'app/repository/postgres/interface';
 import type { IUserService } from 'app/service/interface';
 import bcrypt from 'bcrypt';
-import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';
 import {
   InvalidUsernameOrPassword,
   UnauthorizedError,
-  UsernameAlreadyExistsError,
   UserNotFoundError,
 } from 'app/errors/user';
 import { Config } from 'app/config/config';
@@ -19,25 +17,18 @@ export class UserService implements IUserService {
   ) {}
 
   async registration(username: string, password: string): Promise<UserWithJwtTokens> {
-    try {
-      const passwordHash = await bcrypt.hash(password, 12);
-      const user = await this.usersRepo.create(username, passwordHash);
+    const passwordHash = await bcrypt.hash(password, 12);
+    const user = await this.usersRepo.create(username, passwordHash);
 
-      const jwtPayload: UserJWTPayload = {
-        id: user.id,
-        username: user.username,
-      };
-      const tokens = this.generateTokens(jwtPayload);
+    const jwtPayload: UserJWTPayload = {
+      id: user.id,
+      username: user.username,
+    };
+    const tokens = this.generateTokens(jwtPayload);
 
-      const res: UserWithJwtTokens = { user, tokens };
+    const res: UserWithJwtTokens = { user, tokens };
 
-      return res;
-    } catch (err: unknown) {
-      if (isUniquePgErrViolation(err)) {
-        throw new UsernameAlreadyExistsError();
-      }
-      throw err;
-    }
+    return res;
   }
 
   async login(username: string, password: string): Promise<UserWithJwtTokens> {

@@ -1,6 +1,8 @@
 import type { User } from 'app/model/user';
 import type { IUserRepository } from 'app/repository/postgres/interface';
 import type { Knex } from 'knex';
+import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';
+import { UsernameAlreadyExistsError } from 'app/errors/user';
 
 type UserRow = {
   id: number;
@@ -14,9 +16,17 @@ export class UserRepo implements IUserRepository {
   constructor(private readonly pgConn: Knex) {}
 
   async create(username: string, password: string): Promise<User> {
-    const [row] = await this.pgConn<UserRow>('users').insert({ username, password }).returning('*');
+    try {
+      const [row] = await this.pgConn<UserRow>('users').insert({ username, password }).returning('*');
 
-    return this.toUser(row);
+      return this.toUser(row);
+    } catch (err) {
+      if (isUniquePgErrViolation(err)) {
+        throw new UsernameAlreadyExistsError();
+      }
+
+      throw err;
+    }
   }
 
   async getByUsername(username: string): Promise<User | null> {

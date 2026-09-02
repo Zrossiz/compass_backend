@@ -44,21 +44,21 @@ export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
 };
 
 export class Postgres implements IRepository {
-  readonly users: UserRepo;
-  readonly professions: ProfessionRepo;
-  readonly professionInterviews: IProfessionInterviewRepository;
+  readonly user: UserRepo;
+  readonly profession: ProfessionRepo;
+  readonly professionInterview: IProfessionInterviewRepository;
   readonly speciality: ISpecialityRepository;
-  readonly specialityInterviews: ISpecialityInterviewRepository;
+  readonly specialityInterview: ISpecialityInterviewRepository;
   readonly specialityTrack: ISpecialityTrackRepository;
   readonly university: IUniversityRepository;
   readonly specialityUniversity: ISpecialityUniversityRepository;
 
   constructor(private readonly connection: PgConnection) {
-    this.users = new UserRepo(connection);
-    this.professions = new ProfessionRepo(connection);
-    this.professionInterviews = new ProfessionInterviewRepo(connection);
+    this.user = new UserRepo(connection);
+    this.profession = new ProfessionRepo(connection);
+    this.professionInterview = new ProfessionInterviewRepo(connection);
     this.speciality = new SpecialityRepo(connection);
-    this.specialityInterviews = new SpecialityInterviewRepo(connection);
+    this.specialityInterview = new SpecialityInterviewRepo(connection);
     this.university = new UniversityRepo(connection);
     this.specialityTrack = new SpecialityTrackRepo(connection);
     this.specialityUniversity = new SpecialityUniversityRepo(connection);
