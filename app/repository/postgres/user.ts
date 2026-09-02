@@ -1,5 +1,5 @@
 import type { User } from 'app/model/user';
-import type { IUserRepository } from 'app/repository/interface';
+import type { IUserRepository } from 'app/repository/postgres/interface';
 import type { Knex } from 'knex';
 
 type UserRow = {

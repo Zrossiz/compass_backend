@@ -1,4 +1,4 @@
-import { ISpecialityInterviewRepository } from 'app/repository/interface';
+import { ISpecialityInterviewRepository } from 'app/repository/postgres/interface';
 import { Knex } from 'knex';
 import { SpecialityInterview } from 'app/model/specialityInterview';
 import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';

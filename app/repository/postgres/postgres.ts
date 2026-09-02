@@ -7,16 +7,16 @@ import type {
   ISpecialityTrackRepository,
   ISpecialityUniversityRepository,
   IUniversityRepository,
-} from 'app/repository/interface';
-import { UserRepo } from 'app/repository/user';
+} from 'app/repository/postgres/interface';
+import { UserRepo } from 'app/repository/postgres/user';
 import knex, { type Knex } from 'knex';
-import { ProfessionRepo } from 'app/repository/profession';
-import { ProfessionInterviewRepo } from 'app/repository/professionInterview';
-import { SpecialityRepo } from 'app/repository/speciality';
-import { SpecialityInterviewRepo } from 'app/repository/specialityInterview';
-import { UniversityRepo } from 'app/repository/university';
-import { SpecialityTrackRepo } from 'app/repository/specialityTrack';
-import { SpecialityUniversityRepo } from 'app/repository/specialityUniversity';
+import { ProfessionRepo } from 'app/repository/postgres/profession';
+import { ProfessionInterviewRepo } from 'app/repository/postgres/professionInterview';
+import { SpecialityRepo } from 'app/repository/postgres/speciality';
+import { SpecialityInterviewRepo } from 'app/repository/postgres/specialityInterview';
+import { UniversityRepo } from 'app/repository/postgres/university';
+import { SpecialityTrackRepo } from 'app/repository/postgres/specialityTrack';
+import { SpecialityUniversityRepo } from 'app/repository/postgres/specialityUniversity';
 
 export type PgConnection = Knex;
 

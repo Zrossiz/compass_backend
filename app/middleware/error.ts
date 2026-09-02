@@ -1,3 +1,4 @@
+import { logger } from 'app/app';
 import { UnauthorizedError } from 'app/errors/user';
 import type { Request, Response, NextFunction } from 'express';
 
@@ -13,6 +14,8 @@ export const errorMiddleware = (
     res.status(401).json({ error: error.message });
     return;
   }
+
+  logger.error({ error }, 'internal server error');
 
   res.status(500).json({ error: 'Internal server error' });
 };

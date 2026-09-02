@@ -1,5 +1,5 @@
 import type { CookieOptions, NextFunction, Request, Response } from 'express';
-import type { IUserService } from 'app/service/service';
+import type { IUserService } from 'app/service/interface';
 import {
   UnauthorizedError,
   UsernameAlreadyExistsError,

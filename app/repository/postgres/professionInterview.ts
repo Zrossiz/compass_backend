@@ -1,5 +1,5 @@
 import { ProfessionInterview } from 'app/model/professionInterview';
-import { IProfessionInterviewRepository } from 'app/repository/interface';
+import { IProfessionInterviewRepository } from 'app/repository/postgres/interface';
 import { CreateProfessionInterviewDTO } from 'app/types/professionInterview';
 import { Knex } from 'knex';
 

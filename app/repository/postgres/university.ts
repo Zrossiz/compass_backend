@@ -1,5 +1,5 @@
 import { University } from 'app/model/university';
-import { IUniversityRepository } from 'app/repository/interface';
+import { IUniversityRepository } from 'app/repository/postgres/interface';
 import { Knex } from 'knex';
 
 type UniversityRow = {

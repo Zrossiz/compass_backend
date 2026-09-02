@@ -3,8 +3,9 @@ import { Handler } from 'app/handler/handler';
 import cookieParser from 'cookie-parser';
 import { newConfig } from 'app/config/config';
 import { newLogger } from 'app/logger/logger';
-import { newPgConn } from 'app/repository/postgres';
-import { PgConnection, Postgres } from 'app/repository/postgres';
+import { newPgConn } from 'app/repository/postgres/postgres';
+import { newS3Client, S3 } from 'app/repository/s3/minio';
+import { PgConnection, Postgres } from 'app/repository/postgres/postgres';
 import { Server } from 'node:http';
 import { Service } from 'app/service/service';
 
@@ -23,9 +24,11 @@ export const createApp = async () => {
     app.use(cookieParser());
 
     pgConn = await newPgConn(config.pg);
+    const s3Client = newS3Client(config.s3);
 
+    const s3Repo = new S3(s3Client);
     const pgRepo = new Postgres(pgConn);
-    const service = new Service(pgRepo, config);
+    const service = new Service(pgRepo, s3Repo, config);
     const handler = new Handler(app, service, config);
     handler.registerRoutes();
     handler.registerMiddleware();

@@ -1,4 +1,4 @@
-import { ISpecialityUniversityRepository } from 'app/repository/interface';
+import { ISpecialityUniversityRepository } from 'app/repository/postgres/interface';
 import { Knex } from 'knex';
 
 export class SpecialityUniversityRepo implements ISpecialityUniversityRepository {

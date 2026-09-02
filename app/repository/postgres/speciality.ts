@@ -1,5 +1,5 @@
 import { Speciality } from 'app/model/speciality';
-import { ISpecialityRepository } from 'app/repository/interface';
+import { ISpecialityRepository } from 'app/repository/postgres/interface';
 import { Pagination } from 'app/types/pagination';
 import { CreateSpecialityDTO } from 'app/types/speciality';
 import { Knex } from 'knex';

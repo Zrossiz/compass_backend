@@ -1,4 +1,4 @@
-import { IProfessionRepository } from 'app/repository/interface';
+import { IProfessionRepository } from 'app/repository/postgres/interface';
 import { Profession } from 'app/model/profession';
 import { Knex } from 'knex';
 import { Pagination } from 'app/types/pagination';

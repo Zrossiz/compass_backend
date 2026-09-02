@@ -1,5 +1,5 @@
 import { SpecialityTrack } from 'app/model/specialityTrack';
-import { ISpecialityTrackRepository } from 'app/repository/interface';
+import { ISpecialityTrackRepository } from 'app/repository/postgres/interface';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { Knex } from 'knex';
 
