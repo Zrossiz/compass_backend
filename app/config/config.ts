@@ -58,11 +58,11 @@ export const newConfig = (): Config => {
   };
 
   const s3Config: S3Config = {
-    host: process.env.S3_HOST ?? 'minio',
-    port: Number(process.env.S3_PORT ?? 9000),
-    useSsl: Boolean(process.env.S3_SSL ?? false),
-    accessKey: process.env.S3_ACCESS_KEY ?? 'access',
-    secretKey: process.env.S3_SECRET_KEY ?? 'secret',
+    host: process.env.MINIO_HOST ?? 'minio',
+    port: Number(process.env.MINIO_PORT ?? 9000),
+    useSsl: Boolean(process.env.MINIO_SSL ?? false),
+    accessKey: process.env.MINIO_ACCESS_KEY ?? 'access',
+    secretKey: process.env.MINIO_SECRET_KEY ?? 'secret',
   };
 
   if (appConfig.env === 'production') {

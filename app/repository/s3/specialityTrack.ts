@@ -20,13 +20,7 @@ export class SpecialityTrackS3 implements ISpecialityTrackS3 {
 
     const imagePath = `${imageDirPath}/${specialityTitle}/${file.originalname}`;
 
-    await this.s3Client.putObject(
-      bucketName,
-      imagePath,
-      file.buffer,
-      file.size,
-      metaData,
-    );
+    await this.s3Client.putObject(bucketName, imagePath, file.buffer, file.size, metaData);
 
     return imagePath;
   }
