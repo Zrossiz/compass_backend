@@ -24,6 +24,8 @@ export class SpecialityHandler {
       };
 
       await this.specialityService.create(payload);
+
+      res.status(201).json();
     } catch (err: unknown) {
       if (err instanceof InvalidBodyError) {
         res.status(400).json({ error: err.message });
@@ -51,7 +53,7 @@ export class SpecialityHandler {
       const pagination = buildPagination(req);
 
       const paginatedSpecialities = await this.specialityService.search(
-        String(searchPattern ?? ""),
+        String(searchPattern ?? ''),
         professionId,
         pagination,
       );

@@ -9,11 +9,13 @@ import {
   IUserService,
   IProfessionService,
   ISpecialityInterviewService,
+  IUniversityService,
 } from 'app/service/interface';
 import { ProfessionService } from 'app/service/profession';
 import { SpecialityService } from 'app/service/speciality';
 import { ProfessionInterviewService } from 'app/service/professionInterview';
 import { SpecialityInterviewService } from 'app/service/specialityInterview';
+import { UniversityService } from 'app/service/university';
 
 export class Service implements IService {
   readonly user: IUserService;
@@ -21,6 +23,7 @@ export class Service implements IService {
   readonly professionInterview: IProfessionInterviewService;
   readonly speciality: ISpecialityService;
   readonly specialityInterview: ISpecialityInterviewService;
+  readonly university: IUniversityService;
 
   constructor(
     private readonly pgRepo: IRepository,
@@ -32,5 +35,6 @@ export class Service implements IService {
     this.speciality = new SpecialityService(pgRepo.speciality);
     this.professionInterview = new ProfessionInterviewService(pgRepo.professionInterview);
     this.specialityInterview = new SpecialityInterviewService(pgRepo.specialityInterview);
+    this.university = new UniversityService(pgRepo.university);
   }
 }

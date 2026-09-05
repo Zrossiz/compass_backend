@@ -22,6 +22,7 @@ export class SpecialityInterviewHandler {
       };
 
       await this.specialityInterviewService.create(payload);
+
       res.status(201).json();
     } catch (err: unknown) {
       if (err instanceof InvalidBodyError) {

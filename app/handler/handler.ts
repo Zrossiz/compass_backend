@@ -8,6 +8,7 @@ import { authMiddleware } from 'app/middleware/auth';
 import { SpecialityHandler } from 'app/handler/speciality';
 import { ProfessionInterviewHandler } from 'app/handler/professionInterview';
 import { SpecialityInterviewHandler } from 'app/handler/specialityInterview';
+import { UniversityHandler } from 'app/handler/university';
 
 export class Handler {
   private app: Express;
@@ -16,6 +17,7 @@ export class Handler {
   private professionInterviewHandler: ProfessionInterviewHandler;
   private specialityHandler: SpecialityHandler;
   private specialityInterviewHandler: SpecialityInterviewHandler;
+  private universityHandler: UniversityHandler;
 
   constructor(
     expressApp: Express,
@@ -28,6 +30,7 @@ export class Handler {
     this.professionInterviewHandler = new ProfessionInterviewHandler(this.service.professionInterview);
     this.specialityHandler = new SpecialityHandler(this.service.speciality);
     this.specialityInterviewHandler = new SpecialityInterviewHandler(this.service.specialityInterview);
+    this.universityHandler = new UniversityHandler(this.service.university);
   }
 
   registerRoutes() {
@@ -54,6 +57,9 @@ export class Handler {
 
     this.app.post('/api/v1/speciality-interview', authMiddleware(jwtConfig), this.specialityInterviewHandler.create);
     this.app.get('/api/v1/speciality-interview/speciality/:id', this.specialityInterviewHandler.getAllBySpecialityId);
+
+    this.app.post('/api/v1/university', authMiddleware(jwtConfig), this.universityHandler.create);
+    this.app.get('/api/v1/university/speciality/:id', this.universityHandler.getAllBySpecialityId);
   }
 
   registerMiddleware() {

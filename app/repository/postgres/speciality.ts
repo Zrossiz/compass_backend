@@ -47,9 +47,7 @@ export class SpecialityRepo implements ISpecialityRepository {
 
         if (searchPattern) {
           builder.andWhere((searchBuilder) => {
-            searchBuilder
-              .whereILike('title', match)
-              .orWhereILike('description', match);
+            searchBuilder.whereILike('title', match).orWhereILike('description', match);
           });
         }
       });
@@ -61,9 +59,7 @@ export class SpecialityRepo implements ISpecialityRepository {
         .limit(pagination.limit)
         .offset(pagination.offset),
 
-      applySearch(this.pgConn('specialities'))
-        .count<{ total: string }>({ total: '*' })
-        .first(),
+      applySearch(this.pgConn('specialities')).count<{ total: string }>({ total: '*' }).first(),
     ]);
 
     const total = Number(countRow?.total ?? 0);

@@ -8,6 +8,7 @@ import { CreateProfessionInterviewDTO } from 'app/types/professionInterview';
 import { ProfessionInterview } from 'app/model/professionInterview';
 import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';
 import { SpecialityInterview } from 'app/model/specialityInterview';
+import { University } from 'app/model/university';
 
 export interface IUserService {
   registration(username: string, password: string): Promise<UserWithJwtTokens>;
@@ -37,10 +38,16 @@ export interface ISpecialityService {
   getById(id: number): Promise<Speciality | null>;
 }
 
+export interface IUniversityService {
+  create(title: string, region: string): Promise<void>;
+  getAllBySpecialityId(id: number): Promise<University[]>;
+}
+
 export interface IService {
   readonly user: IUserService;
   readonly profession: IProfessionService;
   readonly professionInterview: IProfessionInterviewService;
   readonly speciality: ISpecialityService;
   readonly specialityInterview: ISpecialityInterviewService;
+  readonly university: IUniversityService;
 }

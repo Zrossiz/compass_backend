@@ -16,6 +16,8 @@ export class ProfessionHandler {
       }
 
       await this.professionService.create(parsed.data.title, parsed.data.description);
+
+      res.status(201).json();
     } catch (err: unknown) {
       if (err instanceof InvalidBodyError) {
         res.status(400).json({ error: err.message });
@@ -35,7 +37,7 @@ export class ProfessionHandler {
       const searchPattern = req.query.search;
       const pagination = buildPagination(req);
 
-      const paginatedProfessions = await this.professionService.search(String(searchPattern ?? ""), pagination);
+      const paginatedProfessions = await this.professionService.search(String(searchPattern ?? ''), pagination);
 
       res.status(200).json(paginatedProfessions);
     } catch (err) {
