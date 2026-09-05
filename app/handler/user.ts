@@ -24,10 +24,7 @@ export class UserHandler {
     }
 
     try {
-      const userWithTokens = await this.userService.registration(
-        parsed.data.username,
-        parsed.data.password,
-      );
+      const userWithTokens = await this.userService.registration(parsed.data.username, parsed.data.password);
 
       const registrationRes: UserRes = {
         id: userWithTokens.user.id,
@@ -67,10 +64,7 @@ export class UserHandler {
     }
 
     try {
-      const userWithTokens = await this.userService.login(
-        parsed.data.username,
-        parsed.data.password,
-      );
+      const userWithTokens = await this.userService.login(parsed.data.username, parsed.data.password);
 
       const loginRes: UserRes = {
         id: userWithTokens.user.id,

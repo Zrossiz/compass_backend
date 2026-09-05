@@ -7,6 +7,7 @@ import type {
   ISpecialityTrackRepository,
   ISpecialityUniversityRepository,
   IUniversityRepository,
+  IUserRepository,
 } from 'app/repository/postgres/interface';
 import { UserRepo } from 'app/repository/postgres/user';
 import knex, { type Knex } from 'knex';
@@ -17,6 +18,7 @@ import { SpecialityInterviewRepo } from 'app/repository/postgres/specialityInter
 import { UniversityRepo } from 'app/repository/postgres/university';
 import { SpecialityTrackRepo } from 'app/repository/postgres/specialityTrack';
 import { SpecialityUniversityRepo } from 'app/repository/postgres/specialityUniversity';
+import { IProfessionRepository } from 'app/repository/postgres/interface';
 
 export type PgConnection = Knex;
 
@@ -44,8 +46,8 @@ export const newPgConn = async (cfg: PostgresConfig): Promise<PgConnection> => {
 };
 
 export class Postgres implements IRepository {
-  readonly user: UserRepo;
-  readonly profession: ProfessionRepo;
+  readonly user: IUserRepository;
+  readonly profession: IProfessionRepository;
   readonly professionInterview: IProfessionInterviewRepository;
   readonly speciality: ISpecialityRepository;
   readonly specialityInterview: ISpecialityInterviewRepository;

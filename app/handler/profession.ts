@@ -1,20 +1,20 @@
 import { IProfessionService } from 'app/service/interface';
 import { NextFunction, Request, Response } from 'express';
-import { ProfessionDTO } from './dto/profession';
-import { InvalidBodyError, InvlidQueryParams } from 'app/errors/validation';
+import { ProfessionDTO } from 'app/handler/dto/profession';
+import { InvalidBodyError, InvalidQueryParams } from 'app/errors/validation';
 import { ProfessionAlreadyExistsError } from 'app/errors/profession';
-import { buildPagination } from './helper';
+import { buildPagination } from 'app/handler/helper';
 
 export class ProfessionHandler {
   constructor(private readonly professionService: IProfessionService) {}
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const parsed = ProfessionDTO.safeParse(req.body);
-    if (!parsed.success) {
-      throw new InvalidBodyError();
-    }
-
     try {
+      const parsed = ProfessionDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError();
+      }
+
       await this.professionService.create(parsed.data.title, parsed.data.description);
     } catch (err: unknown) {
       if (err instanceof InvalidBodyError) {
@@ -35,21 +35,17 @@ export class ProfessionHandler {
       const searchPattern = req.query.search;
       const pagination = buildPagination(req);
 
-      const paginatedProfessions = await this.professionService.search(
-        String(searchPattern),
-        pagination,
-      );
+      const paginatedProfessions = await this.professionService.search(String(searchPattern ?? ""), pagination);
 
       res.status(200).json(paginatedProfessions);
     } catch (err) {
-      if (err instanceof InvlidQueryParams) {
+      if (err instanceof InvalidQueryParams) {
         res.status(400).json({ error: err.message });
         return;
       }
 
       next(err);
     }
-
   }
 
   async getById(req: Request, res: Response, next: NextFunction): Promise<void> {

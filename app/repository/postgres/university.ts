@@ -21,17 +21,8 @@ export class UniversityRepo implements IUniversityRepository {
 
   async getAllBySpecialityId(id: number): Promise<University[]> {
     const rows = await this.pgConn<UniversityRow>('universities')
-      .select(
-        'universities.id',
-        'universities.title',
-        'universities.region',
-        'universities.created_at',
-      )
-      .innerJoin(
-        'speciality_universities',
-        'universities.id',
-        'speciality_universities.university_id',
-      )
+      .select('universities.id', 'universities.title', 'universities.region', 'universities.created_at')
+      .innerJoin('speciality_universities', 'universities.id', 'speciality_universities.university_id')
       .where('speciality_universities.speciality_id', id)
       .orderBy('universities.id');
 

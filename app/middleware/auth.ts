@@ -15,11 +15,7 @@ export const authMiddleware = (jwtConfig: JwtConfig) => {
     try {
       const decoded = jwt.verify(accessToken, jwtConfig.accessSecret);
 
-      if (
-        typeof decoded === 'string' ||
-        typeof decoded.id !== 'number' ||
-        typeof decoded.username !== 'string'
-      ) {
+      if (typeof decoded === 'string' || typeof decoded.id !== 'number' || typeof decoded.username !== 'string') {
         next(new UnauthorizedError());
         return;
       }

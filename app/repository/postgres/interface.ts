@@ -45,7 +45,8 @@ export interface ISpecialityInterviewRepository {
 
 export interface ISpecialityRepository {
   create(payload: CreateSpecialityDTO): Promise<void>;
-  search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Speciality>>;
+  search(pattern: string, professionId: number | null, pagination: Pagination): Promise<PaginatedResult<Speciality>>;
+  getById(id: number): Promise<Speciality | null>;
 }
 
 export interface ISpecialityTrackRepository {

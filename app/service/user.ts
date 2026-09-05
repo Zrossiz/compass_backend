@@ -2,11 +2,7 @@ import type { JwtTokens, UserJWTPayload, UserWithJwtTokens } from 'app/model/use
 import type { IUserRepository } from 'app/repository/postgres/interface';
 import type { IUserService } from 'app/service/interface';
 import bcrypt from 'bcrypt';
-import {
-  InvalidUsernameOrPassword,
-  UnauthorizedError,
-  UserNotFoundError,
-} from 'app/errors/user';
+import { InvalidUsernameOrPassword, UnauthorizedError, UserNotFoundError } from 'app/errors/user';
 import { Config } from 'app/config/config';
 import jwt, { type SignOptions } from 'jsonwebtoken';
 
@@ -68,11 +64,7 @@ export class UserService implements IUserService {
       throw err;
     }
 
-    if (
-      typeof decoded === 'string' ||
-      typeof decoded.id !== 'number' ||
-      typeof decoded.username !== 'string'
-    ) {
+    if (typeof decoded === 'string' || typeof decoded.id !== 'number' || typeof decoded.username !== 'string') {
       throw new UnauthorizedError();
     }
 

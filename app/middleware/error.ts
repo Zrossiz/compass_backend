@@ -2,12 +2,7 @@ import { logger } from 'app/app';
 import { UnauthorizedError } from 'app/errors/user';
 import type { Request, Response, NextFunction } from 'express';
 
-export const errorMiddleware = (
-  error: unknown,
-  _req: Request,
-  res: Response,
-  _next: NextFunction,
-) => {
+export const errorMiddleware = (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   void _next;
 
   if (error instanceof UnauthorizedError) {

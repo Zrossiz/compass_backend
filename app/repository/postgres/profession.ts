@@ -15,10 +15,7 @@ type ProfessionRow = {
 export class ProfessionRepo implements IProfessionRepository {
   constructor(private readonly pgConn: Knex) {}
 
-  async search(
-    pattern: string,
-    pagination: Pagination,
-  ): Promise<PaginatedResult<Profession>> {
+  async search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>> {
     const searchPattern = pattern.trim();
 
     if (!searchPattern) {
@@ -37,9 +34,7 @@ export class ProfessionRepo implements IProfessionRepository {
         .orderBy('id')
         .limit(pagination.limit)
         .offset(pagination.offset),
-      applySearch(this.pgConn('professions'))
-        .count<{ total: string }>({ total: '*' })
-        .first(),
+      applySearch(this.pgConn('professions')).count<{ total: string }>({ total: '*' }).first(),
     ]);
 
     const total = Number(countRow?.total ?? 0);
