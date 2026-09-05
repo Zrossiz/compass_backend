@@ -9,6 +9,15 @@ import { SpecialityHandler } from 'app/handler/speciality';
 import { ProfessionInterviewHandler } from 'app/handler/professionInterview';
 import { SpecialityInterviewHandler } from 'app/handler/specialityInterview';
 import { UniversityHandler } from 'app/handler/university';
+import { SpecialityTrackHandler } from 'app/handler/specialityTrack';
+import multer from 'multer';
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
 
 export class Handler {
   private app: Express;
@@ -18,6 +27,7 @@ export class Handler {
   private specialityHandler: SpecialityHandler;
   private specialityInterviewHandler: SpecialityInterviewHandler;
   private universityHandler: UniversityHandler;
+  private specialityTrackHandler: SpecialityTrackHandler;
 
   constructor(
     expressApp: Express,
@@ -31,6 +41,7 @@ export class Handler {
     this.specialityHandler = new SpecialityHandler(this.service.speciality);
     this.specialityInterviewHandler = new SpecialityInterviewHandler(this.service.specialityInterview);
     this.universityHandler = new UniversityHandler(this.service.university);
+    this.specialityTrackHandler = new SpecialityTrackHandler(this.service.specialityTrack);
   }
 
   registerRoutes() {
@@ -60,6 +71,14 @@ export class Handler {
 
     this.app.post('/api/v1/university', authMiddleware(jwtConfig), this.universityHandler.create);
     this.app.get('/api/v1/university/speciality/:id', this.universityHandler.getAllBySpecialityId);
+
+    this.app.post(
+      '/api/v1/speciality-track',
+      authMiddleware(jwtConfig),
+      upload.single('file'),
+      this.specialityTrackHandler.create,
+    );
+    this.app.get('/api/v1/speciality-track', this.specialityTrackHandler.getAllBySpecialityId);
   }
 
   registerMiddleware() {

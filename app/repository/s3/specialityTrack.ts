@@ -7,7 +7,7 @@ const imageDirPath = '/speciality-tracks';
 export class SpecialityTrackS3 implements ISpecialityTrackS3 {
   constructor(private readonly s3Client: Minio.Client) {}
 
-  async save(file: Express.Multer.File, specialityTitle: number): Promise<string> {
+  async save(file: Express.Multer.File, specialityTitle: string): Promise<string> {
     const bucketExists = await this.s3Client.bucketExists(bucketName);
 
     if (!bucketExists) {

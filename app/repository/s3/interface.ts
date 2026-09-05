@@ -3,5 +3,5 @@ export interface IMinio {
 }
 
 export interface ISpecialityTrackS3 {
-  save(file: Express.Multer.File, specialityTitle: number): Promise<string>;
+  save(file: Express.Multer.File, specialityTitle: string): Promise<string>;
 }
