@@ -83,7 +83,7 @@ export class Handler {
       upload.single('file'),
       this.specialityTrackHandler.create,
     );
-    this.app.get('/api/v1/speciality-track', this.specialityTrackHandler.getAllBySpecialityId);
+    this.app.get('/api/v1/speciality-track/speciality/:id', this.specialityTrackHandler.getAllBySpecialityId);
   }
 
   registerMiddleware() {

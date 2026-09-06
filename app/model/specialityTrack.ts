@@ -3,6 +3,6 @@ export type SpecialityTrack = {
   specialityId: number;
   title: string;
   imageLink: string;
-  sortOrder: string;
+  sortOrder: number;
   createdAt: Date;
 };

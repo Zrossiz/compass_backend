@@ -6,14 +6,14 @@ import { SpecialityUniversityDTO } from 'app/handler/dto/specialityUniversity';
 export class SpecialityUniversityHandler {
   constructor(private readonly specialityUniversityService: ISpecialityUniversityService) {}
 
-  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+  create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = SpecialityUniversityDTO.safeParse(req.body);
       if (!parsed.success) {
         throw new InvalidBodyError();
       }
 
-      await this.specialityUniversityService.create(parsed.data.specialityId, parsed.data.universityId)
+      await this.specialityUniversityService.create(parsed.data.specialityId, parsed.data.universityId);
 
       res.status(201).json();
     } catch (err: unknown) {
@@ -24,5 +24,5 @@ export class SpecialityUniversityHandler {
 
       next(err);
     }
-  }
+  };
 }

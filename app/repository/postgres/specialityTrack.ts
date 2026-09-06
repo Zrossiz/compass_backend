@@ -8,7 +8,7 @@ type SpecialityTrackRow = {
   speciality_id: number;
   title: string;
   image_link: string;
-  sort_order: string;
+  sort_order: number;
   created_at: Date;
 };
 

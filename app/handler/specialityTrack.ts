@@ -1,8 +1,9 @@
 import { ISpecialityTrackService } from 'app/service/interface';
 import { NextFunction, Request, Response } from 'express';
 import { InvalidBodyError, InvalidQueryParams } from 'app/errors/validation';
-import { SpecialityTrackDTO } from 'app/handler/dto/specialityTrack';
+import { SpecialityTrackDTO, SpecialityTrackFileDTO } from 'app/handler/dto/specialityTrack';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { parseIdParam } from 'app/handler/helper';
 
 export class SpecialityTrackHandler {
   constructor(private readonly specialityTrackService: ISpecialityTrackService) {}
@@ -10,11 +11,12 @@ export class SpecialityTrackHandler {
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = SpecialityTrackDTO.safeParse(req.body);
-      if (!parsed.success || !req.file || !req.file.mimetype.startsWith('image/')) {
+      const parsedFile = SpecialityTrackFileDTO.safeParse(req.file);
+      if (!parsed.success || !parsedFile.success) {
         throw new InvalidBodyError();
       }
 
-      const file: Express.Multer.File = req.file;
+      const file: Express.Multer.File = parsedFile.data;
       const payload: CreateSpecialityTrackDTO = {
         specialityId: parsed.data.specialityId,
         title: parsed.data.title,
@@ -37,11 +39,7 @@ export class SpecialityTrackHandler {
 
   getAllBySpecialityId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const specialityId = Number(req.params.id);
-      if (!Number.isInteger(specialityId) || specialityId <= 0) {
-        throw new InvalidQueryParams();
-      }
-
+      const specialityId = parseIdParam(req);
       const tracks = await this.specialityTrackService.getAllBySpecialityId(specialityId);
 
       res.status(200).json(tracks);

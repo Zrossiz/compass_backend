@@ -3,12 +3,13 @@ import { NextFunction, Request, Response } from 'express';
 import { ProfessionDTO } from 'app/handler/dto/profession';
 import { InvalidBodyError, InvalidQueryParams } from 'app/errors/validation';
 import { ProfessionAlreadyExistsError } from 'app/errors/profession';
-import { buildPagination } from 'app/handler/helper';
+import { buildPagination, parseIdParam } from 'app/handler/helper';
+import { SearchQueryDTO } from 'app/handler/dto/common';
 
 export class ProfessionHandler {
   constructor(private readonly professionService: IProfessionService) {}
 
-  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+  create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = ProfessionDTO.safeParse(req.body);
       if (!parsed.success) {
@@ -30,14 +31,17 @@ export class ProfessionHandler {
       }
       next(err);
     }
-  }
+  };
 
-  async find(req: Request, res: Response, next: NextFunction): Promise<void> {
+  find = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const searchPattern = req.query.search;
-      const pagination = buildPagination(req);
+      const parsedQuery = SearchQueryDTO.safeParse(req.query);
+      if (!parsedQuery.success) {
+        throw new InvalidQueryParams();
+      }
 
-      const paginatedProfessions = await this.professionService.search(String(searchPattern ?? ''), pagination);
+      const pagination = buildPagination(req);
+      const paginatedProfessions = await this.professionService.search(parsedQuery.data.search, pagination);
 
       res.status(200).json(paginatedProfessions);
     } catch (err) {
@@ -48,16 +52,11 @@ export class ProfessionHandler {
 
       next(err);
     }
-  }
+  };
 
-  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+  getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const professionId = Number(req.params.id);
-
-      if (!Number.isInteger(professionId) || professionId <= 0) {
-        throw new InvalidBodyError();
-      }
-
+      const professionId = parseIdParam(req);
       const profession = await this.professionService.getById(professionId);
 
       if (!profession) {
@@ -67,12 +66,12 @@ export class ProfessionHandler {
 
       res.status(200).json(profession);
     } catch (err) {
-      if (err instanceof InvalidBodyError) {
+      if (err instanceof InvalidQueryParams) {
         res.status(400).json({ error: err.message });
         return;
       }
 
       next(err);
     }
-  }
+  };
 }

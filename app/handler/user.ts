@@ -8,7 +8,7 @@ import {
 } from 'app/errors/user';
 import { InvalidBodyError } from 'app/errors/validation';
 import type { JwtTokens } from 'app/model/user';
-import { UserDTO, UserRes } from 'app/handler/dto/user';
+import { RefreshTokenCookieDTO, UserDTO, UserRes } from 'app/handler/dto/user';
 import { AppConfig } from 'app/config/config';
 
 export class UserHandler {
@@ -17,13 +17,12 @@ export class UserHandler {
     private readonly appCfg: AppConfig,
   ) {}
 
-  async registration(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const parsed = UserDTO.safeParse(req.body);
-    if (!parsed.success) {
-      throw new InvalidBodyError();
-    }
-
+  registration = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const parsed = UserDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError();
+      }
       const userWithTokens = await this.userService.registration(parsed.data.username, parsed.data.password);
 
       const registrationRes: UserRes = {
@@ -55,15 +54,14 @@ export class UserHandler {
       }
       next(err);
     }
-  }
+  };
 
-  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const parsed = UserDTO.safeParse(req.body);
-    if (!parsed.success) {
-      throw new InvalidBodyError();
-    }
-
+  login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const parsed = UserDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError();
+      }
       const userWithTokens = await this.userService.login(parsed.data.username, parsed.data.password);
 
       const loginRes: UserRes = {
@@ -75,19 +73,23 @@ export class UserHandler {
       this.setAuthCookies(res, userWithTokens.tokens);
       res.status(200).json(loginRes);
     } catch (err) {
+      if (err instanceof InvalidBodyError) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
       next(err);
     }
-  }
+  };
 
-  async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+  refresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const refreshToken = req.cookies['refreshToken'];
-
-      if (refreshToken == '' || typeof refreshToken != 'string') {
+      const parsedCookies = RefreshTokenCookieDTO.safeParse(req.cookies);
+      if (!parsedCookies.success) {
         throw new UnauthorizedError();
       }
 
-      const tokens = this.userService.refresh(refreshToken);
+      const tokens = this.userService.refresh(parsedCookies.data.refreshToken);
 
       this.setAuthCookies(res, tokens);
 
@@ -95,7 +97,7 @@ export class UserHandler {
     } catch (err) {
       next(err);
     }
-  }
+  };
 
   private setAuthCookies(res: Response, tokens: JwtTokens): void {
     const cookieOptions: CookieOptions = {

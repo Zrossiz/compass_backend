@@ -7,7 +7,7 @@ export class InvalidBodyError extends Error {
 
 export class InvalidQueryParams extends Error {
   constructor() {
-    super('Invlid query params');
-    this.name = 'InvlidQueryParams';
+    super('Invalid query params');
+    this.name = 'InvalidQueryParams';
   }
 }

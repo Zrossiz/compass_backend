@@ -4,11 +4,12 @@ import { UniversityDTO } from 'app/handler/dto/university';
 import { InvalidBodyError } from 'app/errors/validation';
 import { InvalidQueryParams } from 'app/errors/validation';
 import { CreateUniversityDTO } from 'app/types/university';
+import { parseIdParam } from 'app/handler/helper';
 
 export class UniversityHandler {
   constructor(private readonly universityService: IUniversityService) {}
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = UniversityDTO.safeParse(req.body);
       if (!parsed.success) {
@@ -24,6 +25,22 @@ export class UniversityHandler {
 
       res.status(201).json();
     } catch (err: unknown) {
+      if (err instanceof InvalidBodyError) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
+  getAllBySpecialityId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const specialityId = parseIdParam(req);
+      const universities = await this.universityService.getAllBySpecialityId(specialityId);
+
+      res.status(200).json(universities);
+    } catch (err: unknown) {
       if (err instanceof InvalidQueryParams) {
         res.status(400).json({ error: err.message });
         return;
@@ -31,20 +48,5 @@ export class UniversityHandler {
 
       next(err);
     }
-  }
-
-  async getAllBySpecialityId(req: Request, res: Response, next: NextFunction) {
-    try {
-      const specialityId = Number(req.params.id);
-      if (!Number.isInteger(specialityId) || specialityId <= 0) {
-        throw new InvalidBodyError();
-      }
-
-      const universities = await this.universityService.getAllBySpecialityId(specialityId);
-
-      res.status(200).json(universities);
-    } catch (err: unknown) {
-      next(err);
-    }
-  }
+  };
 }

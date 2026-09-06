@@ -3,6 +3,8 @@ import { NextFunction, Request, Response } from 'express';
 import { ProfessionInterviewDTO } from 'app/handler/dto/professionInterview';
 import { InvalidBodyError } from 'app/errors/validation';
 import { CreateProfessionInterviewDTO } from 'app/types/professionInterview';
+import { InvalidQueryParams } from 'app/errors/validation';
+import { parseIdParam } from 'app/handler/helper';
 
 export class ProfessionInterviewHandler {
   constructor(private readonly professionInterviewService: IProfessionInterviewService) {}
@@ -35,16 +37,12 @@ export class ProfessionInterviewHandler {
 
   getAllByProfessionId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const professionId = Number(req.params.id);
-      if (!Number.isInteger(professionId) || professionId <= 0) {
-        throw new InvalidBodyError();
-      }
-
+      const professionId = parseIdParam(req);
       const interviews = await this.professionInterviewService.getAllByProfessionId(professionId);
 
       res.status(200).json(interviews);
     } catch (err: unknown) {
-      if (err instanceof InvalidBodyError) {
+      if (err instanceof InvalidQueryParams) {
         res.status(400).json({ error: err.message });
         return;
       }

@@ -1,22 +1,25 @@
 import { Pagination } from 'app/types/pagination';
 import { Request } from 'express';
 import { InvalidQueryParams } from 'app/errors/validation';
+import { IdParamsDTO, PaginationQueryDTO } from 'app/handler/dto/common';
 
 export const buildPagination = (req: Request): Pagination => {
-  const { limit, page } = req.query;
-
-  const numLimit = Number(limit);
-  if (!Number.isInteger(numLimit) || numLimit <= 0 || numLimit > 100) {
-    throw new InvalidQueryParams();
-  }
-
-  const numPage = Number(page);
-  if (!Number.isInteger(numPage) || numPage <= 0) {
+  const parsed = PaginationQueryDTO.safeParse(req.query);
+  if (!parsed.success) {
     throw new InvalidQueryParams();
   }
 
   return {
-    limit: numLimit,
-    offset: (numPage - 1) * numLimit,
+    limit: parsed.data.limit,
+    offset: (parsed.data.page - 1) * parsed.data.limit,
   };
+};
+
+export const parseIdParam = (req: Request): number => {
+  const parsed = IdParamsDTO.safeParse(req.params);
+  if (!parsed.success) {
+    throw new InvalidQueryParams();
+  }
+
+  return parsed.data.id;
 };
