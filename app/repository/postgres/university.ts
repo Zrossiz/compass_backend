@@ -1,5 +1,6 @@
 import { University } from 'app/model/university';
 import { IUniversityRepository } from 'app/repository/postgres/interface';
+import { CreateUniversityDTO } from 'app/types/university';
 import { Knex } from 'knex';
 
 type UniversityRow = {
@@ -12,10 +13,11 @@ type UniversityRow = {
 export class UniversityRepo implements IUniversityRepository {
   constructor(private readonly pgConn: Knex) {}
 
-  async create(title: string, region: string): Promise<void> {
+  async create(payload: CreateUniversityDTO): Promise<void> {
     await this.pgConn('universities').insert({
-      title,
-      region,
+      title: payload.title,
+      region: payload.region,
+      description: payload.description,
     });
   }
 

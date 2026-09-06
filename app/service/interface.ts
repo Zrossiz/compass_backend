@@ -11,6 +11,7 @@ import { SpecialityInterview } from 'app/model/specialityInterview';
 import { University } from 'app/model/university';
 import { SpecialityTrack } from 'app/model/specialityTrack';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { CreateUniversityDTO } from 'app/types/university';
 
 export interface IUserService {
   registration(username: string, password: string): Promise<UserWithJwtTokens>;
@@ -41,13 +42,17 @@ export interface ISpecialityService {
 }
 
 export interface IUniversityService {
-  create(title: string, region: string): Promise<void>;
+  create(payload: CreateUniversityDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<University[]>;
 }
 
 export interface ISpecialityTrackService {
   create(payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void>;
   getAllBySpecialityId(id: number): Promise<SpecialityTrack[]>;
+}
+
+export interface ISpecialityUniversityService {
+  create(specialityId: number, universityId: number): Promise<void>;
 }
 
 export interface IService {
@@ -58,4 +63,5 @@ export interface IService {
   readonly specialityInterview: ISpecialityInterviewService;
   readonly university: IUniversityService;
   readonly specialityTrack: ISpecialityTrackService;
+  readonly specialityUniversity: ISpecialityUniversityService;
 }

@@ -29,6 +29,7 @@ export async function up(knex: Knex): Promise<void> {
       id serial not null primary key,
       title varchar(255) not null,
       region varchar(255) not null,
+      description text not null,
       created_at timestamptz default now()
     );
 

@@ -10,6 +10,7 @@ import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';
 import { University } from 'app/model/university';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { SpecialityTrack } from 'app/model/specialityTrack';
+import { CreateUniversityDTO } from 'app/types/university';
 
 export interface IRepository {
   readonly user: IUserRepository;
@@ -55,7 +56,7 @@ export interface ISpecialityTrackRepository {
 }
 
 export interface IUniversityRepository {
-  create(title: string, region: string): Promise<void>;
+  create(payload: CreateUniversityDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<University[]>;
 }
 

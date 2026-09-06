@@ -10,6 +10,7 @@ import { ProfessionInterviewHandler } from 'app/handler/professionInterview';
 import { SpecialityInterviewHandler } from 'app/handler/specialityInterview';
 import { UniversityHandler } from 'app/handler/university';
 import { SpecialityTrackHandler } from 'app/handler/specialityTrack';
+import { SpecialityUniversityHandler } from 'app/handler/speciailityUniversity';
 import multer from 'multer';
 
 const upload = multer({
@@ -28,6 +29,7 @@ export class Handler {
   private specialityInterviewHandler: SpecialityInterviewHandler;
   private universityHandler: UniversityHandler;
   private specialityTrackHandler: SpecialityTrackHandler;
+  private specialityUniversityHandler: SpecialityUniversityHandler;
 
   constructor(
     expressApp: Express,
@@ -42,6 +44,7 @@ export class Handler {
     this.specialityInterviewHandler = new SpecialityInterviewHandler(this.service.specialityInterview);
     this.universityHandler = new UniversityHandler(this.service.university);
     this.specialityTrackHandler = new SpecialityTrackHandler(this.service.specialityTrack);
+    this.specialityUniversityHandler = new SpecialityUniversityHandler(this.service.specialityUniversity);
   }
 
   registerRoutes() {
@@ -71,6 +74,8 @@ export class Handler {
 
     this.app.post('/api/v1/university', authMiddleware(jwtConfig), this.universityHandler.create);
     this.app.get('/api/v1/university/speciality/:id', this.universityHandler.getAllBySpecialityId);
+
+    this.app.post('/api/v1/speciality-university', authMiddleware(jwtConfig), this.specialityUniversityHandler.create);
 
     this.app.post(
       '/api/v1/speciality-track',

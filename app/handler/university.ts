@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { UniversityDTO } from 'app/handler/dto/university';
 import { InvalidBodyError } from 'app/errors/validation';
 import { InvalidQueryParams } from 'app/errors/validation';
+import { CreateUniversityDTO } from 'app/types/university';
 
 export class UniversityHandler {
   constructor(private readonly universityService: IUniversityService) {}
@@ -14,7 +15,12 @@ export class UniversityHandler {
         throw new InvalidBodyError();
       }
 
-      await this.universityService.create(parsed.data.title, parsed.data.region);
+      const payload: CreateUniversityDTO = {
+        title: parsed.data.title,
+        region: parsed.data.region,
+        description: parsed.data.description,
+      };
+      await this.universityService.create(payload);
 
       res.status(201).json();
     } catch (err: unknown) {
