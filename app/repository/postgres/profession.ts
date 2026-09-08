@@ -17,16 +17,16 @@ export class ProfessionRepo implements IProfessionRepository {
 
   async search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>> {
     const searchPattern = pattern.trim();
-
-    if (!searchPattern) {
-      return { items: [], totalPages: 0 };
-    }
-
     const match = `%${searchPattern}%`;
-    const applySearch = (query: Knex.QueryBuilder) =>
-      query.where((builder) => {
+    const applySearch = (query: Knex.QueryBuilder) => {
+      if (!searchPattern) {
+        return query;
+      }
+
+      return query.where((builder) => {
         builder.whereILike('title', match).orWhereILike('description', match);
       });
+    };
 
     const [rows, countRow] = await Promise.all([
       applySearch(this.pgConn<ProfessionRow>('professions'))

@@ -1,3 +1,5 @@
+import { productionAppEnv } from "app/config/constants";
+
 export type Config = {
   pg: PostgresConfig;
   app: AppConfig;
@@ -25,6 +27,7 @@ export type AppConfig = {
   port: number;
   logger: string;
   env: string;
+  frontendURI: string;
   jwt: JwtConfig;
 };
 
@@ -49,6 +52,7 @@ export const newConfig = (): Config => {
     env: process.env.APP_ENV ?? 'dev',
     port: Number(process.env.APP_PORT ?? 9000),
     logger: process.env.LOGGER_LEVEL ?? 'info',
+    frontendURI: process.env.FRONTEND_URI ?? "",
     jwt: {
       accessLifetime: process.env.ACCESS_LIFETIME ?? '5m',
       accessSecret: process.env.ACCESS_SECRET ?? '',
@@ -65,7 +69,7 @@ export const newConfig = (): Config => {
     secretKey: process.env.MINIO_SECRET_KEY ?? 'secret',
   };
 
-  if (appConfig.env === 'production') {
+  if (appConfig.env === productionAppEnv) {
     if (!process.env.ACCESS_SECRET || !process.env.REFRESH_SECRET) {
       throw new Error('JWT secrets are required in production');
     }

@@ -8,6 +8,8 @@ import { newS3Client, S3 } from 'app/repository/s3/minio';
 import { PgConnection, Postgres } from 'app/repository/postgres/postgres';
 import { Server } from 'node:http';
 import { Service } from 'app/service/service';
+import cors from 'cors';
+import { productionAppEnv } from 'app/config/constants';
 
 const config = newConfig();
 
@@ -20,6 +22,12 @@ export const createApp = async () => {
   try {
     const app = express();
 
+    const corsOptions = {
+      origin: config.app.env == productionAppEnv ? config.app.frontendURI : "http://localhost:3000",
+      credentials: true,
+    }
+
+    app.use(cors(corsOptions));
     app.use(express.json());
     app.use(cookieParser());
 
