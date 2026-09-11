@@ -56,6 +56,7 @@ export class SpecialityHandler {
         parsedSpecialityQuery.data.professionId,
         pagination,
       );
+      paginatedSpecialities.curPage = pagination.page;
 
       res.status(200).json(paginatedSpecialities);
     } catch (err) {

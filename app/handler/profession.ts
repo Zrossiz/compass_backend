@@ -42,6 +42,7 @@ export class ProfessionHandler {
 
       const pagination = buildPagination(req);
       const paginatedProfessions = await this.professionService.search(parsedQuery.data.search, pagination);
+      paginatedProfessions.curPage = pagination.page;
 
       res.status(200).json(paginatedProfessions);
     } catch (err) {

@@ -10,6 +10,7 @@ export const buildPagination = (req: Request): Pagination => {
   }
 
   return {
+    page: parsed.data.page,
     limit: parsed.data.limit,
     offset: (parsed.data.page - 1) * parsed.data.limit,
   };
