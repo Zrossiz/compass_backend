@@ -27,7 +27,7 @@ export class ProfessionInterviewRepo implements IProfessionInterviewRepository {
     const rows = await this.pgConn<ProfessionInterviewRow>('profession_interviews')
       .select('id', 'profession_id', 'title', 'video_link', 'sort_order')
       .where('profession_id', id)
-      .orderBy('sort_order', 'desc');
+      .orderBy('sort_order', 'asc');
 
     return rows.map(this.toProfessionInterview);
   }

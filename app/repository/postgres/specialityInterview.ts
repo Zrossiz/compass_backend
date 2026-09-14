@@ -27,7 +27,7 @@ export class SpecialityInterviewRepo implements ISpecialityInterviewRepository {
     const rows = await this.pgConn<SpecialityInterviewRow>('speciality_interviews')
       .select('id', 'speciality_id', 'title', 'video_link', 'sort_order')
       .where('speciality_id', id)
-      .orderBy('sort_order', 'desc');
+      .orderBy('sort_order', 'asc');
 
     return rows.map(this.toSpecialityInterview);
   }

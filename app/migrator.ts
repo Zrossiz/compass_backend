@@ -49,16 +49,19 @@ const init = async () => {
         break;
       case undefined:
       case '':
-        console.log('-a cannot be empty');
+        console.error('-a cannot be empty');
+        process.exitCode = 1;
         return;
       default:
-        console.log('possible actions is: up or down');
+        console.error('possible actions are: up, down or latest');
+        process.exitCode = 1;
         return;
     }
 
     console.log('successful migration');
   } catch (err: unknown) {
-    console.log(err);
+    console.error(err);
+    process.exitCode = 1;
   } finally {
     await conn.destroy();
   }

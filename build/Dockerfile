@@ -3,7 +3,7 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm i
+RUN npm ci
 
 COPY tsconfig.json tsconfig.migrations.json ./
 COPY app ./app
@@ -26,4 +26,4 @@ EXPOSE 9000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://127.0.0.1:9000/health || exit 1
 
-CMD ["npm", "start"]
+CMD ["node", "dist/server.js"]

@@ -67,6 +67,7 @@ export class SpecialityRepo implements ISpecialityRepository {
     return {
       items: rows.map(this.toSpeciality),
       totalPages: Math.ceil(total / pagination.limit),
+      curPage: pagination.page,
     };
   }
 

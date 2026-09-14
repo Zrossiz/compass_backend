@@ -1,4 +1,4 @@
-import { productionAppEnv } from "app/config/constants";
+import { productionAppEnv } from 'app/config/constants';
 
 export type Config = {
   pg: PostgresConfig;
@@ -52,7 +52,7 @@ export const newConfig = (): Config => {
     env: process.env.APP_ENV ?? 'dev',
     port: Number(process.env.APP_PORT ?? 9000),
     logger: process.env.LOGGER_LEVEL ?? 'info',
-    frontendURI: process.env.FRONTEND_URI ?? "",
+    frontendURI: process.env.FRONTEND_URI ?? '',
     jwt: {
       accessLifetime: process.env.ACCESS_LIFETIME ?? '5m',
       accessSecret: process.env.ACCESS_SECRET ?? '',
@@ -64,7 +64,7 @@ export const newConfig = (): Config => {
   const s3Config: S3Config = {
     host: process.env.MINIO_HOST ?? 'minio',
     port: Number(process.env.MINIO_PORT ?? 9000),
-    useSsl: Boolean(process.env.MINIO_SSL ?? false),
+    useSsl: process.env.MINIO_SSL === 'true',
     accessKey: process.env.MINIO_ACCESS_KEY ?? 'access',
     secretKey: process.env.MINIO_SECRET_KEY ?? 'secret',
   };

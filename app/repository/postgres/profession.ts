@@ -42,6 +42,7 @@ export class ProfessionRepo implements IProfessionRepository {
     return {
       items: rows.map(this.toProfession),
       totalPages: Math.ceil(total / pagination.limit),
+      curPage: pagination.page,
     };
   }
 
