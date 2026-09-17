@@ -14,7 +14,8 @@ export async function up(knex: Knex): Promise<void> {
       id serial not null primary key,
       title varchar(255) not null unique,
       description text not null,
-      created_at timestamptz default now()
+      created_at timestamptz default now(),
+      updated_at timestamptz default now()
     );
 
     create table if not exists specialities (
@@ -22,7 +23,8 @@ export async function up(knex: Knex): Promise<void> {
       profession_id integer not null references professions(id) on delete cascade,
       title varchar(255) not null,
       description text not null,
-      created_at timestamptz default now()
+      created_at timestamptz default now(),
+      updated_at timestamptz default now()
     );
 
     create table if not exists universities (
@@ -30,7 +32,8 @@ export async function up(knex: Knex): Promise<void> {
       title varchar(255) not null,
       region varchar(255) not null,
       description text not null,
-      created_at timestamptz default now()
+      created_at timestamptz default now(),
+      updated_at timestamptz default now()
     );
 
     create table if not exists profession_interviews (
@@ -39,7 +42,8 @@ export async function up(knex: Knex): Promise<void> {
       title varchar(255) not null,
       video_link varchar(255) not null,
       sort_order integer not null,
-      created_at timestamptz default now()
+      created_at timestamptz default now(),
+      updated_at timestamptz default now()
     );
 
     create table if not exists speciality_interviews (
@@ -48,7 +52,8 @@ export async function up(knex: Knex): Promise<void> {
       title varchar(255) not null,
       video_link varchar(255) not null,
       sort_order integer not null,
-      created_at timestamptz default now()
+      created_at timestamptz default now(),
+      updated_at timestamptz default now()
     );
 
     create table if not exists speciality_tracks (
@@ -57,7 +62,8 @@ export async function up(knex: Knex): Promise<void> {
       title varchar(255) not null,
       image_link varchar(255) not null,
       sort_order integer not null,
-      created_at timestamptz default now()
+      created_at timestamptz default now(),
+      updated_at timestamptz default now()
     );
 
     create table if not exists speciality_universities (
