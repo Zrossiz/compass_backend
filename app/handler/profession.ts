@@ -37,7 +37,7 @@ export class ProfessionHandler {
         throw new InvalidBodyError();
       }
 
-      await this.professionService.create(parsed.data.title, parsed.data.description);
+      await this.professionService.create(parsed.data.sphereId, parsed.data.title, parsed.data.description);
 
       res.status(201).json();
     } catch (err: unknown) {

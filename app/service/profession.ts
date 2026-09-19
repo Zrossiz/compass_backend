@@ -10,8 +10,8 @@ export class ProfessionService implements IProfessionService {
     return await this.professionsRepo.deleteById(id);
   }
 
-  async create(title: string, description: string): Promise<void> {
-    await this.professionsRepo.create(title, description);
+  async create(sphereId: number, title: string, description: string): Promise<void> {
+    await this.professionsRepo.create(sphereId, title, description);
   }
 
   async getById(id: number): Promise<Profession | null> {

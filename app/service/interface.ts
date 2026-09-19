@@ -22,7 +22,7 @@ export interface IUserService {
 
 export interface IProfessionService {
   deleteById(id: number): Promise<boolean>;
-  create(title: string, description: string): Promise<void>;
+  create(sphereId: number, title: string, description: string): Promise<void>;
   getById(id: number): Promise<Profession | null>;
   search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>>;
 }

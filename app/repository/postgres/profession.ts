@@ -7,6 +7,7 @@ import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';
 
 type ProfessionRow = {
   id: number;
+  sphere_id: number;
   title: string;
   description: string;
   created_at: Date;
@@ -35,7 +36,7 @@ export class ProfessionRepo implements IProfessionRepository {
 
     const [rows, countRow] = await Promise.all([
       applySearch(this.pgConn<ProfessionRow>('professions'))
-        .select('id', 'title', 'description', 'created_at')
+        .select('id', 'sphere_id', 'title', 'description', 'created_at')
         .orderBy('id')
         .limit(pagination.limit)
         .offset(pagination.offset),
@@ -51,9 +52,10 @@ export class ProfessionRepo implements IProfessionRepository {
     };
   }
 
-  async create(title: string, description: string): Promise<void> {
+  async create(sphereId: number, title: string, description: string): Promise<void> {
     try {
       await this.pgConn('professions').insert({
+        sphere_id: sphereId,
         title,
         description,
       });
@@ -66,7 +68,7 @@ export class ProfessionRepo implements IProfessionRepository {
 
   async getById(id: number): Promise<Profession | null> {
     const row = await this.pgConn<ProfessionRow>('professions')
-      .select('id', 'title', 'description', 'created_at')
+      .select('id', 'sphere_id', 'title', 'description', 'created_at')
       .where({ id })
       .first();
     return row ? this.toProfession(row) : null;
@@ -74,6 +76,7 @@ export class ProfessionRepo implements IProfessionRepository {
 
   private toProfession = (row: ProfessionRow): Profession => ({
     id: row.id,
+    sphereId: row.sphere_id,
     title: row.title,
     description: row.description,
     createdAt: row.created_at,
