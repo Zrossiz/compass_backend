@@ -6,6 +6,7 @@ import type {
   ISpecialityRepository,
   ISpecialityTrackRepository,
   ISpecialityUniversityRepository,
+  ISphereRepository,
   IUniversityRepository,
   IUserRepository,
 } from 'app/repository/postgres/interface';
@@ -19,6 +20,7 @@ import { UniversityRepo } from 'app/repository/postgres/university';
 import { SpecialityTrackRepo } from 'app/repository/postgres/specialityTrack';
 import { SpecialityUniversityRepo } from 'app/repository/postgres/specialityUniversity';
 import { IProfessionRepository } from 'app/repository/postgres/interface';
+import { SphereRepo } from './sphere';
 
 export type PgConnection = Knex;
 
@@ -54,6 +56,7 @@ export class Postgres implements IRepository {
   readonly specialityTrack: ISpecialityTrackRepository;
   readonly university: IUniversityRepository;
   readonly specialityUniversity: ISpecialityUniversityRepository;
+  readonly sphere: ISphereRepository;
 
   constructor(private readonly connection: PgConnection) {
     this.user = new UserRepo(connection);
@@ -64,6 +67,7 @@ export class Postgres implements IRepository {
     this.university = new UniversityRepo(connection);
     this.specialityTrack = new SpecialityTrackRepo(connection);
     this.specialityUniversity = new SpecialityUniversityRepo(connection);
+    this.sphere = new SphereRepo(connection);
   }
 
   transaction<T>(handler: (trx: Knex.Transaction) => Promise<T>): Promise<T> {

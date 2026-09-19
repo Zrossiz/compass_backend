@@ -12,6 +12,19 @@ import { University } from 'app/model/university';
 import { SpecialityTrack } from 'app/model/specialityTrack';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { CreateUniversityDTO } from 'app/types/university';
+import { Sphere } from 'app/model/sphere';
+
+export interface IService {
+  readonly user: IUserService;
+  readonly profession: IProfessionService;
+  readonly professionInterview: IProfessionInterviewService;
+  readonly speciality: ISpecialityService;
+  readonly specialityInterview: ISpecialityInterviewService;
+  readonly university: IUniversityService;
+  readonly specialityTrack: ISpecialityTrackService;
+  readonly specialityUniversity: ISpecialityUniversityService;
+  readonly sphere: ISphereService;
+}
 
 export interface IUserService {
   deleteById(id: number): Promise<boolean>;
@@ -63,13 +76,8 @@ export interface ISpecialityUniversityService {
   create(specialityId: number, universityId: number): Promise<void>;
 }
 
-export interface IService {
-  readonly user: IUserService;
-  readonly profession: IProfessionService;
-  readonly professionInterview: IProfessionInterviewService;
-  readonly speciality: ISpecialityService;
-  readonly specialityInterview: ISpecialityInterviewService;
-  readonly university: IUniversityService;
-  readonly specialityTrack: ISpecialityTrackService;
-  readonly specialityUniversity: ISpecialityUniversityService;
+export interface ISphereService {
+  deleteById(id: number): Promise<boolean>;
+  create(title: string, description: string): Promise<void>;
+  getAll(): Promise<Sphere[]>;
 }

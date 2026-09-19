@@ -11,6 +11,7 @@ import { University } from 'app/model/university';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { SpecialityTrack } from 'app/model/specialityTrack';
 import { CreateUniversityDTO } from 'app/types/university';
+import { Sphere } from 'app/model/sphere';
 
 export interface IRepository {
   readonly user: IUserRepository;
@@ -21,6 +22,7 @@ export interface IRepository {
   readonly specialityTrack: ISpecialityTrackRepository;
   readonly university: IUniversityRepository;
   readonly specialityUniversity: ISpecialityUniversityRepository;
+  readonly sphere: ISphereRepository;
 }
 
 export interface IUserRepository {
@@ -70,4 +72,10 @@ export interface IUniversityRepository {
 export interface ISpecialityUniversityRepository {
   deleteById(id: number): Promise<boolean>;
   create(specialityId: number, universityId: number): Promise<void>;
+}
+
+export interface ISphereRepository {
+  deleteById(id: number): Promise<boolean>;
+  create(title: string, description: string): Promise<void>;
+  getAll(): Promise<Sphere[]>;
 }

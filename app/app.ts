@@ -23,9 +23,9 @@ export const createApp = async () => {
     const app = express();
 
     const corsOptions = {
-      origin: config.app.env == productionAppEnv ? config.app.frontendURI : "http://localhost:3000",
+      origin: config.app.env == productionAppEnv ? config.app.frontendURI : 'http://localhost:3000',
       credentials: true,
-    }
+    };
 
     app.use(cors(corsOptions));
     app.use(express.json());

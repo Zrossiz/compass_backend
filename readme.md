@@ -62,7 +62,9 @@ Production должен находиться за HTTPS reverse proxy. Знач�
 `https://compass.example.com`.
 
 ## Миграции вручную
+
 Создать миграцию
+
 ```sh
 npx knex migrate:make migration_name -x ts --migrations-directory ./migrations/postgres
 ```
@@ -70,7 +72,6 @@ npx knex migrate:make migration_name -x ts --migrations-directory ./migrations/p
 ```sh
 docker compose --env-file .env -f prod/docker-compose.prod.yaml run --rm migrator -a latest
 ```
-
 
 Применить одну следующую миграцию в production:
 

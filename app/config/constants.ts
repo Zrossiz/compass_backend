@@ -1,2 +1,2 @@
-export const productionAppEnv = "production";
-export const devAppEnv = "dev";
+export const productionAppEnv = 'production';
+export const devAppEnv = 'dev';

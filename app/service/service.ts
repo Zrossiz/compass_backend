@@ -11,6 +11,7 @@ import {
   ISpecialityInterviewService,
   IUniversityService,
   ISpecialityTrackService,
+  ISphereService,
 } from 'app/service/interface';
 import { ProfessionService } from 'app/service/profession';
 import { SpecialityService } from 'app/service/speciality';
@@ -20,6 +21,7 @@ import { UniversityService } from 'app/service/university';
 import { SpecialityTrackService } from 'app/service/specialityTrack';
 import { ISpecialityUniversityService } from 'app/service/interface';
 import { SpecialityUniversityService } from 'app/service/speciailityUniversity';
+import { SphereService } from './sphere';
 
 export class Service implements IService {
   readonly user: IUserService;
@@ -30,6 +32,7 @@ export class Service implements IService {
   readonly university: IUniversityService;
   readonly specialityTrack: ISpecialityTrackService;
   readonly specialityUniversity: ISpecialityUniversityService;
+  readonly sphere: ISphereService;
 
   constructor(
     private readonly pgRepo: IRepository,
@@ -44,5 +47,6 @@ export class Service implements IService {
     this.university = new UniversityService(pgRepo.university);
     this.specialityTrack = new SpecialityTrackService(pgRepo.specialityTrack, s3Client.specialityTrack);
     this.specialityUniversity = new SpecialityUniversityService(pgRepo.specialityUniversity);
+    this.sphere = new SphereService(pgRepo.sphere);
   }
 }

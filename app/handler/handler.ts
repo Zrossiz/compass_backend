@@ -12,6 +12,7 @@ import { UniversityHandler } from 'app/handler/university';
 import { SpecialityTrackHandler } from 'app/handler/specialityTrack';
 import { SpecialityUniversityHandler } from 'app/handler/speciailityUniversity';
 import multer from 'multer';
+import { SphereHandler } from './sphere';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -30,6 +31,7 @@ export class Handler {
   private universityHandler: UniversityHandler;
   private specialityTrackHandler: SpecialityTrackHandler;
   private specialityUniversityHandler: SpecialityUniversityHandler;
+  private sphereHandler: SphereHandler;
 
   constructor(
     expressApp: Express,
@@ -45,6 +47,7 @@ export class Handler {
     this.universityHandler = new UniversityHandler(this.service.university);
     this.specialityTrackHandler = new SpecialityTrackHandler(this.service.specialityTrack);
     this.specialityUniversityHandler = new SpecialityUniversityHandler(this.service.specialityUniversity);
+    this.sphereHandler = new SphereHandler(this.service.sphere);
   }
 
   registerRoutes() {
@@ -104,6 +107,10 @@ export class Handler {
       this.specialityTrackHandler.create,
     );
     this.app.get('/api/v1/speciality-track/speciality/:id', this.specialityTrackHandler.getAllBySpecialityId);
+
+    this.app.delete('/api/v1/spheres/:id', authMiddleware(jwtConfig), this.sphereHandler.deleteById);
+    this.app.get('/api/v1/spheres', this.sphereHandler.getAll);
+    this.app.post('/api/v1/spheres', authMiddleware(jwtConfig), this.sphereHandler.create);
   }
 
   registerMiddleware() {
