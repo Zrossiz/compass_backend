@@ -9,6 +9,27 @@ import { parseIdParam } from 'app/handler/helper';
 export class UniversityHandler {
   constructor(private readonly universityService: IUniversityService) {}
 
+  deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const deleted = await this.universityService.deleteById(id);
+
+      if (!deleted) {
+        res.status(404).json();
+        return;
+      }
+
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = UniversityDTO.safeParse(req.body);

@@ -14,6 +14,11 @@ type ProfessionInterviewRow = {
 export class ProfessionInterviewRepo implements IProfessionInterviewRepository {
   constructor(private readonly pgConn: Knex) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    const deletedCount = await this.pgConn('profession_interviews').where({ id }).del();
+    return deletedCount > 0;
+  }
+
   async create(payload: CreateProfessionInterviewDTO): Promise<void> {
     await this.pgConn('profession_interviews').insert({
       profession_id: payload.professionId,

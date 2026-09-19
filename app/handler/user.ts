@@ -1,3 +1,4 @@
+import { parseIdParam } from 'app/handler/helper';
 import type { CookieOptions, NextFunction, Request, Response } from 'express';
 import type { IUserService } from 'app/service/interface';
 import {
@@ -6,7 +7,7 @@ import {
   UserNotFoundError,
   InvalidUsernameOrPassword,
 } from 'app/errors/user';
-import { InvalidBodyError } from 'app/errors/validation';
+import { InvalidBodyError, InvalidQueryParams } from 'app/errors/validation';
 import type { JwtTokens } from 'app/model/user';
 import { RefreshTokenCookieDTO, UserDTO, UserRes } from 'app/handler/dto/user';
 import { AppConfig } from 'app/config/config';
@@ -16,6 +17,27 @@ export class UserHandler {
     private readonly userService: IUserService,
     private readonly appCfg: AppConfig,
   ) {}
+
+  deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const deleted = await this.userService.deleteById(id);
+
+      if (!deleted) {
+        res.status(404).json();
+        return;
+      }
+
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
 
   registration = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

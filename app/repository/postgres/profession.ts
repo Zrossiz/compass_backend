@@ -15,6 +15,11 @@ type ProfessionRow = {
 export class ProfessionRepo implements IProfessionRepository {
   constructor(private readonly pgConn: Knex) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    const deletedCount = await this.pgConn('professions').where({ id }).del();
+    return deletedCount > 0;
+  }
+
   async search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>> {
     const searchPattern = pattern.trim();
     const match = `%${searchPattern}%`;

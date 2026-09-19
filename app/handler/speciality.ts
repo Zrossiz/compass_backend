@@ -11,6 +11,27 @@ import { SpecialityAlreadyExistsError } from 'app/errors/speciality';
 export class SpecialityHandler {
   constructor(private readonly specialityService: ISpecialityService) {}
 
+  deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const deleted = await this.specialityService.deleteById(id);
+
+      if (!deleted) {
+        res.status(404).json();
+        return;
+      }
+
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = SpecialityDTO.safeParse(req.body);

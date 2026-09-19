@@ -6,6 +6,10 @@ import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';
 export class SpecialityInterviewService implements ISpecialityInterviewService {
   constructor(private readonly specialityInterviewRepo: ISpecialityInterviewRepository) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.specialityInterviewRepo.deleteById(id);
+  }
+
   async create(payload: CreateSpecialityInterviewDTO): Promise<void> {
     await this.specialityInterviewRepo.create(payload);
   }

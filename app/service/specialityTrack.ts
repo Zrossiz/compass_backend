@@ -10,6 +10,10 @@ export class SpecialityTrackService implements ISpecialityTrackService {
     private readonly specialityTrackS3: ISpecialityTrackS3,
   ) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.specialityTrackRepo.deleteById(id);
+  }
+
   async create(payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void> {
     const filePath = await this.specialityTrackS3.save(file, payload.title);
     payload.imageLink = filePath;

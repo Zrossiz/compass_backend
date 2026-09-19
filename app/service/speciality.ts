@@ -7,6 +7,10 @@ import { Pagination, PaginatedResult } from 'app/types/pagination';
 export class SpecialityService implements ISpecialityService {
   constructor(private readonly specialityRepo: ISpecialityRepository) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.specialityRepo.deleteById(id);
+  }
+
   async create(payload: CreateSpecialityDTO): Promise<void> {
     await this.specialityRepo.create(payload);
   }

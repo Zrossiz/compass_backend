@@ -4,6 +4,10 @@ import { ISpecialityUniversityService } from 'app/service/interface';
 export class SpecialityUniversityService implements ISpecialityUniversityService {
   constructor(private readonly specialityUniversityRepo: ISpecialityUniversityRepository) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.specialityUniversityRepo.deleteById(id);
+  }
+
   async create(specialityId: number, universityId: number): Promise<void> {
     await this.specialityUniversityRepo.create(specialityId, universityId);
   }

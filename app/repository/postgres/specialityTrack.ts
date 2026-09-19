@@ -15,6 +15,11 @@ type SpecialityTrackRow = {
 export class SpecialityTrackRepo implements ISpecialityTrackRepository {
   constructor(private readonly pgConn: Knex) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    const deletedCount = await this.pgConn('speciality_tracks').where({ id }).del();
+    return deletedCount > 0;
+  }
+
   async create(payload: CreateSpecialityTrackDTO): Promise<void> {
     await this.pgConn('speciality_tracks').insert({
       speciality_id: payload.specialityId,

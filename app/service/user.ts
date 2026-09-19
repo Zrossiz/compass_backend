@@ -12,6 +12,10 @@ export class UserService implements IUserService {
     private readonly cfg: Config,
   ) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.usersRepo.deleteById(id);
+  }
+
   async registration(username: string, password: string): Promise<UserWithJwtTokens> {
     const passwordHash = await bcrypt.hash(password, 12);
     const user = await this.usersRepo.create(username, passwordHash);

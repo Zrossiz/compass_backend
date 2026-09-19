@@ -6,6 +6,10 @@ import { CreateProfessionInterviewDTO } from 'app/types/professionInterview';
 export class ProfessionInterviewService implements IProfessionInterviewService {
   constructor(private readonly professionInterviewRepo: IProfessionInterviewRepository) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.professionInterviewRepo.deleteById(id);
+  }
+
   async create(payload: CreateProfessionInterviewDTO): Promise<void> {
     await this.professionInterviewRepo.create(payload);
   }

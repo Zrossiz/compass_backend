@@ -15,6 +15,11 @@ type UserRow = {
 export class UserRepo implements IUserRepository {
   constructor(private readonly pgConn: Knex) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    const deletedCount = await this.pgConn('users').where({ id }).del();
+    return deletedCount > 0;
+  }
+
   async create(username: string, password: string): Promise<User> {
     try {
       const [row] = await this.pgConn<UserRow>('users').insert({ username, password }).returning('*');

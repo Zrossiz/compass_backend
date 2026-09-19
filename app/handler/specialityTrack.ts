@@ -8,6 +8,27 @@ import { parseIdParam } from 'app/handler/helper';
 export class SpecialityTrackHandler {
   constructor(private readonly specialityTrackService: ISpecialityTrackService) {}
 
+  deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const deleted = await this.specialityTrackService.deleteById(id);
+
+      if (!deleted) {
+        res.status(404).json();
+        return;
+      }
+
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = SpecialityTrackDTO.safeParse(req.body);

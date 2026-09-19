@@ -6,6 +6,10 @@ import { PaginatedResult, Pagination } from 'app/types/pagination';
 export class ProfessionService implements IProfessionService {
   constructor(private readonly professionsRepo: IProfessionRepository) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    return await this.professionsRepo.deleteById(id);
+  }
+
   async create(title: string, description: string): Promise<void> {
     await this.professionsRepo.create(title, description);
   }

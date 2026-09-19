@@ -14,44 +14,52 @@ import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { CreateUniversityDTO } from 'app/types/university';
 
 export interface IUserService {
+  deleteById(id: number): Promise<boolean>;
   registration(username: string, password: string): Promise<UserWithJwtTokens>;
   login(username: string, password: string): Promise<UserWithJwtTokens>;
   refresh(refreshToken: string): JwtTokens;
 }
 
 export interface IProfessionService {
+  deleteById(id: number): Promise<boolean>;
   create(title: string, description: string): Promise<void>;
   getById(id: number): Promise<Profession | null>;
   search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>>;
 }
 
 export interface IProfessionInterviewService {
+  deleteById(id: number): Promise<boolean>;
   create(payload: CreateProfessionInterviewDTO): Promise<void>;
   getAllByProfessionId(id: number): Promise<ProfessionInterview[]>;
 }
 
 export interface ISpecialityInterviewService {
+  deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityInterviewDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<SpecialityInterview[]>;
 }
 
 export interface ISpecialityService {
+  deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityDTO): Promise<void>;
   search(pattern: string, professionId: number | null, pagination: Pagination): Promise<PaginatedResult<Speciality>>;
   getById(id: number): Promise<Speciality | null>;
 }
 
 export interface IUniversityService {
+  deleteById(id: number): Promise<boolean>;
   create(payload: CreateUniversityDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<University[]>;
 }
 
 export interface ISpecialityTrackService {
+  deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void>;
   getAllBySpecialityId(id: number): Promise<SpecialityTrack[]>;
 }
 
 export interface ISpecialityUniversityService {
+  deleteById(id: number): Promise<boolean>;
   create(specialityId: number, universityId: number): Promise<void>;
 }
 

@@ -13,6 +13,11 @@ type UniversityRow = {
 export class UniversityRepo implements IUniversityRepository {
   constructor(private readonly pgConn: Knex) {}
 
+  async deleteById(id: number): Promise<boolean> {
+    const deletedCount = await this.pgConn('universities').where({ id }).del();
+    return deletedCount > 0;
+  }
+
   async create(payload: CreateUniversityDTO): Promise<void> {
     await this.pgConn('universities').insert({
       title: payload.title,
