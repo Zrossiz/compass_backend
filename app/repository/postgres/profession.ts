@@ -65,6 +65,7 @@ export class ProfessionRepo implements IProfessionRepository {
       if (isUniquePgErrViolation(err)) {
         throw new ProfessionAlreadyExistsError();
       }
+      throw err;
     }
   }
 
