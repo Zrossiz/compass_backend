@@ -18,7 +18,7 @@ export class ProfessionService implements IProfessionService {
     return await this.professionsRepo.getById(id);
   }
 
-  async search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>> {
-    return await this.professionsRepo.search(pattern, pagination);
+  async search(pattern: string, sphereId: number, pagination: Pagination): Promise<PaginatedResult<Profession>> {
+    return await this.professionsRepo.search(pattern, sphereId, pagination);
   }
 }

@@ -35,7 +35,7 @@ export interface IProfessionRepository {
   deleteById(id: number): Promise<boolean>;
   create(sphereId: number, title: string, description: string): Promise<void>;
   getById(id: number): Promise<Profession | null>;
-  search(pattern: string, pagination: Pagination): Promise<PaginatedResult<Profession>>;
+  search(pattern: string, sphereId: number, pagination: Pagination): Promise<PaginatedResult<Profession>>;
 }
 
 export interface IProfessionInterviewRepository {
