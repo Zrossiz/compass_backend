@@ -75,10 +75,10 @@ export class Handler {
     this.app.post('/api/v1/profession-interview', authMiddleware(jwtConfig), this.professionInterviewHandler.create);
     this.app.get('/api/v1/profession-interview/profession/:id', this.professionInterviewHandler.getAllByProfessionId);
 
-    this.app.delete('/api/v1/specialities/:id', authMiddleware(jwtConfig), this.specialityHandler.deleteById);
-    this.app.post('/api/v1/specialities', authMiddleware(jwtConfig), this.specialityHandler.create);
-    this.app.get('/api/v1/specialities', this.specialityHandler.find);
-    this.app.get('/api/v1/specialities/:id', this.specialityHandler.getById);
+    this.app.delete('/api/v1/specialties/:id', authMiddleware(jwtConfig), this.specialityHandler.deleteById);
+    this.app.post('/api/v1/specialties', authMiddleware(jwtConfig), this.specialityHandler.create);
+    this.app.get('/api/v1/specialties', this.specialityHandler.find);
+    this.app.get('/api/v1/specialties/:id', this.specialityHandler.getById);
 
     this.app.delete(
       '/api/v1/speciality-interview/:id',
