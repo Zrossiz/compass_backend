@@ -9,7 +9,6 @@ import { PgConnection, Postgres } from 'app/repository/postgres/postgres';
 import { Server } from 'node:http';
 import { Service } from 'app/service/service';
 import cors from 'cors';
-import { productionAppEnv } from 'app/config/constants';
 
 const config = newConfig();
 
@@ -23,7 +22,7 @@ export const createApp = async () => {
     const app = express();
 
     const corsOptions = {
-      origin: config.app.env == productionAppEnv ? config.app.frontendURI : 'http://localhost:3000',
+      origin: config.app.frontendURI ?? 'http://localhost:3000',
       credentials: true,
     };
 
