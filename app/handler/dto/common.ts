@@ -13,5 +13,4 @@ export const PaginationQueryDTO = z.object({
 
 export const SearchQueryDTO = z.object({
   search: z.string().trim().max(255).default(''),
-  sphereId: z.coerce.number().int().positive(),
 });
