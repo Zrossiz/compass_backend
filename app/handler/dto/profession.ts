@@ -7,3 +7,8 @@ export const ProfessionDTO = z
     description: z.string().trim().min(8).max(10_000),
   })
   .strict();
+
+
+  export const ProfessionsSearchQueryDTO = z.object({
+    sphereId: z.coerce.number().int().positive(),
+  });

@@ -1,6 +1,6 @@
 import { IProfessionService } from 'app/service/interface';
 import { NextFunction, Request, Response } from 'express';
-import { ProfessionDTO } from 'app/handler/dto/profession';
+import { ProfessionDTO, ProfessionsSearchQueryDTO } from 'app/handler/dto/profession';
 import { InvalidBodyError, InvalidQueryParams } from 'app/errors/validation';
 import { ProfessionAlreadyExistsError } from 'app/errors/profession';
 import { buildPagination, parseIdParam } from 'app/handler/helper';
@@ -60,11 +60,16 @@ export class ProfessionHandler {
       if (!parsedQuery.success) {
         throw new InvalidQueryParams();
       }
+      const parsedSpecialityQuery = ProfessionsSearchQueryDTO.safeParse(req.query);
+      if (!parsedQuery.success || !parsedSpecialityQuery.success) {
+        throw new InvalidQueryParams();
+      }
+
 
       const pagination = buildPagination(req);
       const paginatedProfessions = await this.professionService.search(
         parsedQuery.data.search,
-        parsedQuery.data.sphereId,
+        parsedSpecialityQuery.data.sphereId,
         pagination,
       );
       paginatedProfessions.curPage = pagination.page;
