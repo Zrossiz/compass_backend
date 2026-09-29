@@ -24,4 +24,8 @@ export class SpecialityTrackS3 implements ISpecialityTrackS3 {
 
     return imagePath;
   }
+
+  async getPresignedUrl(path: string): Promise<string> {
+    return this.s3Client.presignedUrl("GET", bucketName, path)
+  }
 }

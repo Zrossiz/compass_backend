@@ -4,4 +4,5 @@ export interface IMinio {
 
 export interface ISpecialityTrackS3 {
   save(file: Express.Multer.File, specialityTitle: string): Promise<string>;
+  getPresignedUrl(path: string): Promise<string>;
 }
