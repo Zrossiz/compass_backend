@@ -24,10 +24,6 @@ export class SpecialityTrackService implements ISpecialityTrackService {
   async getAllBySpecialityId(id: number): Promise<SpecialityTrack[]> {
     const tracks = await this.specialityTrackRepo.getAllBySpecialityId(id);
 
-    await Promise.all(tracks.map(async (elem) => {
-      elem.imageLink = await this.specialityTrackS3.getPresignedUrl(elem.imageLink);
-    }))
-
     return tracks;
   }
 }

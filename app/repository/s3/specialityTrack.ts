@@ -2,7 +2,6 @@ import { ISpecialityTrackS3 } from 'app/repository/s3/interface';
 import * as Minio from 'minio';
 
 const bucketName = 'speciality-tracks';
-const imageDirPath = '/speciality-tracks';
 
 export class SpecialityTrackS3 implements ISpecialityTrackS3 {
   constructor(private readonly s3Client: Minio.Client) {}
@@ -18,7 +17,7 @@ export class SpecialityTrackS3 implements ISpecialityTrackS3 {
       'Content-Type': file.mimetype,
     };
 
-    const imagePath = `${imageDirPath}/${specialityTitle}/${file.originalname}`;
+    const imagePath = `/${specialityTitle}/${file.originalname}`;
 
     await this.s3Client.putObject(bucketName, imagePath, file.buffer, file.size, metaData);
 
