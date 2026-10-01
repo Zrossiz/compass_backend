@@ -49,6 +49,17 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
+    
+  admin:
+    build:
+      context: ../../admin
+      dockerfile: Dockerifle
+    env_file: ../../admin/.env
+    ports:
+      - "4173:4173"
+    restart: unless-stopped
+    depends_on:
+      - "backend"
 
   migrator:
     build:

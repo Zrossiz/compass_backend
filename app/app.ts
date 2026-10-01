@@ -24,7 +24,7 @@ export const createApp = async () => {
     const corsOptions = {
       origin: [ 
         config.app.frontendURI ?? 'http://localhost:3000',
-        config.app.adminURI ?? 'http://localhost:5173',
+        config.app.adminURI ?? 'http://localhost:4173',
       ],
       credentials: true,
     };
