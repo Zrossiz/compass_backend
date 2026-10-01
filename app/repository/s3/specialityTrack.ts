@@ -21,7 +21,7 @@ export class SpecialityTrackS3 implements ISpecialityTrackS3 {
 
     await this.s3Client.putObject(bucketName, imagePath, file.buffer, file.size, metaData);
 
-    return imagePath;
+    return `${bucketName}${imagePath}`;
   }
 
   async getPresignedUrl(path: string): Promise<string> {
