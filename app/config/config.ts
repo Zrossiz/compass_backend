@@ -28,6 +28,7 @@ export type AppConfig = {
   logger: string;
   env: string;
   frontendURI: string;
+  adminURI: string;
   jwt: JwtConfig;
 };
 
@@ -53,6 +54,7 @@ export const newConfig = (): Config => {
     port: Number(process.env.APP_PORT ?? 9000),
     logger: process.env.LOGGER_LEVEL ?? 'info',
     frontendURI: process.env.FRONTEND_URI ?? '',
+    adminURI: process.env.ADMIN_URI ?? '',
     jwt: {
       accessLifetime: process.env.ACCESS_LIFETIME ?? '5m',
       accessSecret: process.env.ACCESS_SECRET ?? '',
