@@ -9,6 +9,26 @@ import { SphereAlreadyExistsError } from 'app/errors/sphere';
 export class SphereHandler {
   constructor(private readonly sphereService: ISphereService) {}
 
+  updateById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const parsed = SphereDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError();
+      }
+
+      await this.sphereService.update(id, parsed.data?.title, parsed.data?.description);
+
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidBodyError) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      next(err);
+    }
+  };
+
   deleteById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const id = parseIdParam(req);

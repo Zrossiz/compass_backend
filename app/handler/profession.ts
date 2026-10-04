@@ -65,7 +65,6 @@ export class ProfessionHandler {
         throw new InvalidQueryParams();
       }
 
-
       const pagination = buildPagination(req);
       const paginatedProfessions = await this.professionService.search(
         parsedQuery.data.search,

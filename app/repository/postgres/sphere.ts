@@ -39,6 +39,17 @@ export class SphereRepo implements ISphereRepository {
     return rows.map(this.toSphere);
   }
 
+  async update(id: number, title: string, description: string): Promise<void> {
+    await this.pgConn('spheres')
+      .update({
+        title,
+        description,
+      })
+      .where({
+        id,
+      });
+  }
+
   toSphere(row: SphereRow): Sphere {
     const sphere: Sphere = {
       id: row.id,

@@ -80,4 +80,5 @@ export interface ISphereService {
   deleteById(id: number): Promise<boolean>;
   create(title: string, description: string): Promise<void>;
   getAll(): Promise<Sphere[]>;
+  update(id: number, title: string, description: string): Promise<void>;
 }

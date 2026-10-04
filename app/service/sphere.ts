@@ -16,4 +16,8 @@ export class SphereService implements ISphereService {
   async getAll(): Promise<Sphere[]> {
     return this.sphereRepo.getAll();
   }
+
+  async update(id: number, title: string, description: string): Promise<void> {
+    await this.sphereRepo.update(id, title, description);
+  }
 }

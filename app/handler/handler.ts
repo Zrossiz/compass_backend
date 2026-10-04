@@ -111,6 +111,7 @@ export class Handler {
     this.app.delete('/api/v1/spheres/:id', authMiddleware(jwtConfig), this.sphereHandler.deleteById);
     this.app.get('/api/v1/spheres', this.sphereHandler.getAll);
     this.app.post('/api/v1/spheres', authMiddleware(jwtConfig), this.sphereHandler.create);
+    this.app.post('/api/v1/spheres/:id', authMiddleware(jwtConfig), this.sphereHandler.updateById);
   }
 
   registerMiddleware() {

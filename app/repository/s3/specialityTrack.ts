@@ -25,6 +25,6 @@ export class SpecialityTrackS3 implements ISpecialityTrackS3 {
   }
 
   async getPresignedUrl(path: string): Promise<string> {
-    return this.s3Client.presignedUrl("GET", bucketName, path)
+    return this.s3Client.presignedUrl('GET', bucketName, path);
   }
 }

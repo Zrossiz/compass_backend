@@ -45,21 +45,21 @@ services:
       dockerfile: Dockerfile
     env_file: ../../frontend/.env
     ports:
-      - "3000:3000"
+      - '3000:3000'
     restart: unless-stopped
     depends_on:
       - backend
-    
+
   admin:
     build:
       context: ../../admin
-      dockerfile: Dockerifle
+      dockerfile: Dockerfile
     env_file: ../../admin/.env
     ports:
-      - "4173:4173"
+      - '4173:4173'
     restart: unless-stopped
     depends_on:
-      - "backend"
+      - 'backend'
 
   migrator:
     build:
