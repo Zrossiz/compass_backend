@@ -34,7 +34,7 @@ export class ProfessionInterviewHandler {
     try {
       const parsed = ProfessionInterviewDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
 
       const payload: CreateProfessionInterviewDTO = {

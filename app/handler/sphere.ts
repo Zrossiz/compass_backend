@@ -14,7 +14,7 @@ export class SphereHandler {
       const id = parseIdParam(req);
       const parsed = SphereDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
 
       await this.sphereService.update(id, parsed.data?.title, parsed.data?.description);
@@ -54,7 +54,7 @@ export class SphereHandler {
     try {
       const parsed = SphereDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
 
       await this.sphereService.create(parsed.data.title, parsed.data.description);

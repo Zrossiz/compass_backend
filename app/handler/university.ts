@@ -34,7 +34,7 @@ export class UniversityHandler {
     try {
       const parsed = UniversityDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
 
       const payload: CreateUniversityDTO = {

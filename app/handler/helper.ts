@@ -6,7 +6,7 @@ import { IdParamsDTO, PaginationQueryDTO } from 'app/handler/dto/common';
 export const buildPagination = (req: Request): Pagination => {
   const parsed = PaginationQueryDTO.safeParse(req.query);
   if (!parsed.success) {
-    throw new InvalidQueryParams();
+    throw new InvalidQueryParams(parsed.error.message);
   }
 
   return {
@@ -19,7 +19,7 @@ export const buildPagination = (req: Request): Pagination => {
 export const parseIdParam = (req: Request): number => {
   const parsed = IdParamsDTO.safeParse(req.params);
   if (!parsed.success) {
-    throw new InvalidQueryParams();
+    throw new InvalidQueryParams(parsed.error.message);
   }
 
   return parsed.data.id;

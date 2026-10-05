@@ -34,7 +34,7 @@ export class SpecialityTrackHandler {
       const parsed = SpecialityTrackDTO.safeParse(req.body);
       const parsedFile = SpecialityTrackFileDTO.safeParse(req.file);
       if (!parsed.success || !parsedFile.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error?.message ?? "");
       }
 
       const file: Express.Multer.File = parsedFile.data;

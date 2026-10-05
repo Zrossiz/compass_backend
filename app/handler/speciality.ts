@@ -36,7 +36,7 @@ export class SpecialityHandler {
     try {
       const parsed = SpecialityDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
       const payload: CreateSpecialityDTO = {
         professionId: parsed.data.professionId,
@@ -67,7 +67,7 @@ export class SpecialityHandler {
       const parsedQuery = SearchQueryDTO.safeParse(req.query);
       const parsedSpecialityQuery = SpecialitySearchQueryDTO.safeParse(req.query);
       if (!parsedQuery.success || !parsedSpecialityQuery.success) {
-        throw new InvalidQueryParams();
+        throw new InvalidQueryParams(parsedQuery.error?.message ?? "");
       }
 
       const pagination = buildPagination(req);

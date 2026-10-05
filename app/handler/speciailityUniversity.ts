@@ -32,7 +32,7 @@ export class SpecialityUniversityHandler {
     try {
       const parsed = SpecialityUniversityDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
 
       await this.specialityUniversityService.create(parsed.data.specialityId, parsed.data.universityId);

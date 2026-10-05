@@ -43,7 +43,7 @@ export class UserHandler {
     try {
       const parsed = UserDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
       const userWithTokens = await this.userService.registration(parsed.data.username, parsed.data.password);
 
@@ -82,7 +82,7 @@ export class UserHandler {
     try {
       const parsed = UserDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
       const userWithTokens = await this.userService.login(parsed.data.username, parsed.data.password);
 

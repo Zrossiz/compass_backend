@@ -34,7 +34,7 @@ export class ProfessionHandler {
     try {
       const parsed = ProfessionDTO.safeParse(req.body);
       if (!parsed.success) {
-        throw new InvalidBodyError();
+        throw new InvalidBodyError(parsed.error.message);
       }
 
       await this.professionService.create(parsed.data.sphereId, parsed.data.title, parsed.data.description);
@@ -58,11 +58,11 @@ export class ProfessionHandler {
     try {
       const parsedQuery = SearchQueryDTO.safeParse(req.query);
       if (!parsedQuery.success) {
-        throw new InvalidQueryParams();
+        throw new InvalidQueryParams(parsedQuery.error.message);
       }
       const parsedSpecialityQuery = ProfessionsSearchQueryDTO.safeParse(req.query);
-      if (!parsedQuery.success || !parsedSpecialityQuery.success) {
-        throw new InvalidQueryParams();
+      if (!parsedSpecialityQuery.success || !parsedSpecialityQuery.success) {
+        throw new InvalidQueryParams(parsedSpecialityQuery.error.message);
       }
 
       const pagination = buildPagination(req);
