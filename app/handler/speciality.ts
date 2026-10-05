@@ -67,7 +67,7 @@ export class SpecialityHandler {
       const parsedQuery = SearchQueryDTO.safeParse(req.query);
       const parsedSpecialityQuery = SpecialitySearchQueryDTO.safeParse(req.query);
       if (!parsedQuery.success || !parsedSpecialityQuery.success) {
-        throw new InvalidQueryParams(parsedQuery.error?.message ?? "");
+        throw new InvalidQueryParams(parsedQuery.error?.message ?? '');
       }
 
       const pagination = buildPagination(req);

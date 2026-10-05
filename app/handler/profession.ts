@@ -60,16 +60,16 @@ export class ProfessionHandler {
       if (!parsedQuery.success) {
         throw new InvalidQueryParams(parsedQuery.error.message);
       }
-      const parsedSpecialityQuery = ProfessionsSearchQueryDTO.safeParse(req.query);
-      if (!parsedSpecialityQuery.success || !parsedSpecialityQuery.success) {
-        throw new InvalidQueryParams(parsedSpecialityQuery.error.message);
+      const parsedProfessionQuery = ProfessionsSearchQueryDTO.safeParse(req.query);
+      if (!parsedProfessionQuery.success || !parsedProfessionQuery.success) {
+        throw new InvalidQueryParams(parsedProfessionQuery.error.message);
       }
 
       const pagination = buildPagination(req);
       const paginatedProfessions = await this.professionService.search(
         parsedQuery.data.search,
-        parsedSpecialityQuery.data.sphereId,
         pagination,
+        parsedProfessionQuery.data.sphereId,
       );
       paginatedProfessions.curPage = pagination.page;
 

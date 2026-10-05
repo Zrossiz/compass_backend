@@ -21,11 +21,13 @@ export class ProfessionRepo implements IProfessionRepository {
     return deletedCount > 0;
   }
 
-  async search(pattern: string, sphereId: number, pagination: Pagination): Promise<PaginatedResult<Profession>> {
+  async search(pattern: string, pagination: Pagination, sphereId?: number): Promise<PaginatedResult<Profession>> {
     const searchPattern = pattern.trim();
     const match = `%${searchPattern}%`;
     const applySearch = (query: Knex.QueryBuilder) => {
-      query.where('sphere_id', sphereId);
+      if (sphereId) {
+        query.where('sphere_id', sphereId);
+      }
 
       if (!searchPattern) {
         return query;

@@ -2,7 +2,7 @@ export class InvalidBodyError extends Error {
   constructor(err: string) {
     super('Invalid request body');
     this.name = 'InvalidBodyError';
-    this.message = String(err)
+    this.message = String(err);
   }
 }
 
