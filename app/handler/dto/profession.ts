@@ -9,5 +9,5 @@ export const ProfessionDTO = z
   .strict();
 
 export const ProfessionsSearchQueryDTO = z.object({
-  sphereId: z.coerce.number().int().positive(),
+  sphereId: z.coerce.number().int().positive().optional(),
 });
