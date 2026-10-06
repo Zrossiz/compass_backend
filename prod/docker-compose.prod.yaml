@@ -47,8 +47,6 @@ services:
     ports:
       - '3000:3000'
     restart: unless-stopped
-    depends_on:
-      - backend
 
   admin:
     build:
@@ -58,8 +56,6 @@ services:
     ports:
       - '4173:4173'
     restart: unless-stopped
-    depends_on:
-      - 'backend'
 
   migrator:
     build:
