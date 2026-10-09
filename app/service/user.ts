@@ -31,6 +31,11 @@ export class UserService implements IUserService {
     return res;
   }
 
+  async update(id: number, username: string, password: string): Promise<void> {
+    const passwordHash = await bcrypt.hash(password, 12);
+    await this.usersRepo.update(id, username, passwordHash);
+  }
+
   async login(username: string, password: string): Promise<UserWithJwtTokens> {
     const user = await this.usersRepo.getByUsername(username);
     if (!user) {

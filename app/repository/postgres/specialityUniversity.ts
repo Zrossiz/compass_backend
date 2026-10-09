@@ -15,4 +15,11 @@ export class SpecialityUniversityRepo implements ISpecialityUniversityRepository
       university_id: universityId,
     });
   }
+
+  async update(id: number, specialityId: number, universityId: number): Promise<void> {
+    await this.pgConn('speciality_universities').where({ id }).update({
+      speciality_id: specialityId,
+      university_id: universityId,
+    });
+  }
 }

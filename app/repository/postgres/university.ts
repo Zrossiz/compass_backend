@@ -26,6 +26,15 @@ export class UniversityRepo implements IUniversityRepository {
     });
   }
 
+  async update(id: number, payload: CreateUniversityDTO): Promise<void> {
+    await this.pgConn('universities').where({ id }).update({
+      title: payload.title,
+      region: payload.region,
+      description: payload.description,
+      updated_at: this.pgConn.fn.now(),
+    });
+  }
+
   async getAllBySpecialityId(id: number): Promise<University[]> {
     const rows = await this.pgConn<UniversityRow>('universities')
       .select('universities.id', 'universities.title', 'universities.region', 'universities.created_at')

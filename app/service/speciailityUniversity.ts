@@ -11,4 +11,8 @@ export class SpecialityUniversityService implements ISpecialityUniversityService
   async create(specialityId: number, universityId: number): Promise<void> {
     await this.specialityUniversityRepo.create(specialityId, universityId);
   }
+
+  async update(id: number, specialityId: number, universityId: number): Promise<void> {
+    await this.specialityUniversityRepo.update(id, specialityId, universityId);
+  }
 }

@@ -29,6 +29,7 @@ export interface IService {
 export interface IUserService {
   deleteById(id: number): Promise<boolean>;
   registration(username: string, password: string): Promise<UserWithJwtTokens>;
+  update(id: number, username: string, password: string): Promise<void>;
   login(username: string, password: string): Promise<UserWithJwtTokens>;
   refresh(refreshToken: string): JwtTokens;
 }
@@ -36,6 +37,7 @@ export interface IUserService {
 export interface IProfessionService {
   deleteById(id: number): Promise<boolean>;
   create(sphereId: number, title: string, description: string): Promise<void>;
+  update(professionId: number, sphereId: number, title: string, description: string): Promise<void>;
   getById(id: number): Promise<Profession | null>;
   search(pattern: string, pagination: Pagination, sphereId?: number): Promise<PaginatedResult<Profession>>;
 }
@@ -43,18 +45,21 @@ export interface IProfessionService {
 export interface IProfessionInterviewService {
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateProfessionInterviewDTO): Promise<void>;
+  update(id: number, payload: CreateProfessionInterviewDTO): Promise<void>;
   getAllByProfessionId(id: number): Promise<ProfessionInterview[]>;
 }
 
 export interface ISpecialityInterviewService {
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityInterviewDTO): Promise<void>;
+  update(id: number, payload: CreateSpecialityInterviewDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<SpecialityInterview[]>;
 }
 
 export interface ISpecialityService {
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityDTO): Promise<void>;
+  update(id: number, payload: CreateSpecialityDTO): Promise<void>;
   search(pattern: string, professionId: number | null, pagination: Pagination): Promise<PaginatedResult<Speciality>>;
   getById(id: number): Promise<Speciality | null>;
 }
@@ -62,18 +67,21 @@ export interface ISpecialityService {
 export interface IUniversityService {
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateUniversityDTO): Promise<void>;
+  update(id: number, payload: CreateUniversityDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<University[]>;
 }
 
 export interface ISpecialityTrackService {
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void>;
+  update(id: number, payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void>;
   getAllBySpecialityId(id: number): Promise<SpecialityTrack[]>;
 }
 
 export interface ISpecialityUniversityService {
   deleteById(id: number): Promise<boolean>;
   create(specialityId: number, universityId: number): Promise<void>;
+  update(id: number, specialityId: number, universityId: number): Promise<void>;
 }
 
 export interface ISphereService {

@@ -33,6 +33,23 @@ export class SpecialityRepo implements ISpecialityRepository {
       if (isUniquePgErrViolation(err)) {
         throw new SpecialityAlreadyExistsError();
       }
+      throw err;
+    }
+  }
+
+  async update(id: number, payload: CreateSpecialityDTO): Promise<void> {
+    try {
+      await this.pgConn('specialities').where({ id }).update({
+        profession_id: payload.professionId,
+        title: payload.title,
+        description: payload.description,
+        updated_at: this.pgConn.fn.now(),
+      });
+    } catch (err: unknown) {
+      if (isUniquePgErrViolation(err)) {
+        throw new SpecialityAlreadyExistsError();
+      }
+      throw err;
     }
   }
 

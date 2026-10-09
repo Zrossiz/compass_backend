@@ -29,6 +29,16 @@ export class SpecialityTrackRepo implements ISpecialityTrackRepository {
     });
   }
 
+  async update(id: number, payload: CreateSpecialityTrackDTO): Promise<void> {
+    await this.pgConn('speciality_tracks').where({ id }).update({
+      speciality_id: payload.specialityId,
+      title: payload.title,
+      image_link: payload.imageLink,
+      sort_order: payload.sortOrder,
+      updated_at: this.pgConn.fn.now(),
+    });
+  }
+
   async getAllBySpecialityId(id: number): Promise<SpecialityTrack[]> {
     const rows = await this.pgConn<SpecialityTrackRow>('speciality_tracks')
       .select('id', 'speciality_id', 'title', 'image_link', 'sort_order', 'created_at')

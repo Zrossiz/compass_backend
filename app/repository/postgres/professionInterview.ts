@@ -28,6 +28,16 @@ export class ProfessionInterviewRepo implements IProfessionInterviewRepository {
     });
   }
 
+  async update(id: number, payload: CreateProfessionInterviewDTO): Promise<void> {
+    await this.pgConn('profession_interviews').where({ id }).update({
+      profession_id: payload.professionId,
+      title: payload.title,
+      video_link: payload.videoLink,
+      sort_order: payload.order,
+      updated_at: this.pgConn.fn.now(),
+    });
+  }
+
   async getAllByProfessionId(id: number): Promise<ProfessionInterview[]> {
     const rows = await this.pgConn<ProfessionInterviewRow>('profession_interviews')
       .select('id', 'profession_id', 'title', 'video_link', 'sort_order')

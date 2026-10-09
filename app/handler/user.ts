@@ -39,6 +39,31 @@ export class UserHandler {
     }
   };
 
+  updateById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const parsed = UserDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError(parsed.error.message);
+      }
+
+      await this.userService.update(id, parsed.data.username, parsed.data.password);
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidBodyError || err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (err instanceof UsernameAlreadyExistsError) {
+        res.status(409).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
   registration = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsed = UserDTO.safeParse(req.body);

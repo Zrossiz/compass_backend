@@ -62,6 +62,31 @@ export class SpecialityHandler {
     }
   };
 
+  updateById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const parsed = SpecialityDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError(parsed.error.message);
+      }
+
+      await this.specialityService.update(id, parsed.data);
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidBodyError || err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (err instanceof SpecialityAlreadyExistsError) {
+        res.status(409).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
   find = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const parsedQuery = SearchQueryDTO.safeParse(req.query);

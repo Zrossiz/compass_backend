@@ -21,8 +21,13 @@ export class SphereHandler {
 
       res.status(204).send();
     } catch (err: unknown) {
-      if (err instanceof InvalidBodyError) {
+      if (err instanceof InvalidBodyError || err instanceof InvalidQueryParams) {
         res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (err instanceof SphereAlreadyExistsError) {
+        res.status(409).json({ error: err.message });
         return;
       }
       next(err);

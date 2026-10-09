@@ -40,14 +40,18 @@ export class SphereRepo implements ISphereRepository {
   }
 
   async update(id: number, title: string, description: string): Promise<void> {
-    await this.pgConn('spheres')
-      .update({
+    try {
+      await this.pgConn('spheres').where({ id }).update({
         title,
         description,
-      })
-      .where({
-        id,
+        updated_at: this.pgConn.fn.now(),
       });
+    } catch (err: unknown) {
+      if (isUniquePgErrViolation(err)) {
+        throw new SphereAlreadyExistsError();
+      }
+      throw err;
+    }
   }
 
   toSphere(row: SphereRow): Sphere {

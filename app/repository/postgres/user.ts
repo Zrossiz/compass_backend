@@ -34,6 +34,21 @@ export class UserRepo implements IUserRepository {
     }
   }
 
+  async update(id: number, username: string, password: string): Promise<void> {
+    try {
+      await this.pgConn('users').where({ id }).update({
+        username,
+        password,
+        updated_at: this.pgConn.fn.now(),
+      });
+    } catch (err) {
+      if (isUniquePgErrViolation(err)) {
+        throw new UsernameAlreadyExistsError();
+      }
+      throw err;
+    }
+  }
+
   async getByUsername(username: string): Promise<User | null> {
     const row = await this.pgConn<UserRow>('users').where({ username }).first();
 

@@ -47,4 +47,24 @@ export class SpecialityUniversityHandler {
       next(err);
     }
   };
+
+  updateById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const parsed = SpecialityUniversityDTO.safeParse(req.body);
+      if (!parsed.success) {
+        throw new InvalidBodyError(parsed.error.message);
+      }
+
+      await this.specialityUniversityService.update(id, parsed.data.specialityId, parsed.data.universityId);
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidBodyError || err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
 }

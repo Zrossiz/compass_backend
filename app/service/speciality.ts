@@ -15,6 +15,10 @@ export class SpecialityService implements ISpecialityService {
     await this.specialityRepo.create(payload);
   }
 
+  async update(id: number, payload: CreateSpecialityDTO): Promise<void> {
+    await this.specialityRepo.update(id, payload);
+  }
+
   async search(
     pattern: string,
     professionId: number | null,

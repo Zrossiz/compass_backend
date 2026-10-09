@@ -14,6 +14,10 @@ export class SpecialityInterviewService implements ISpecialityInterviewService {
     await this.specialityInterviewRepo.create(payload);
   }
 
+  async update(id: number, payload: CreateSpecialityInterviewDTO): Promise<void> {
+    await this.specialityInterviewRepo.update(id, payload);
+  }
+
   async getAllBySpecialityId(id: number): Promise<SpecialityInterview[]> {
     return await this.specialityInterviewRepo.getAllBySpecialityId(id);
   }

@@ -21,6 +21,11 @@ export class SpecialityTrackService implements ISpecialityTrackService {
     await this.specialityTrackRepo.create(payload);
   }
 
+  async update(id: number, payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void> {
+    payload.imageLink = await this.specialityTrackS3.save(file, payload.title);
+    await this.specialityTrackRepo.update(id, payload);
+  }
+
   async getAllBySpecialityId(id: number): Promise<SpecialityTrack[]> {
     const tracks = await this.specialityTrackRepo.getAllBySpecialityId(id);
 

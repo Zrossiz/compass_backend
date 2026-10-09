@@ -61,9 +61,11 @@ export class Handler {
     this.app.post('/api/v1/users/register', this.userHandler.registration);
     this.app.post('/api/v1/users/login', this.userHandler.login);
     this.app.post('/api/v1/users/refresh', this.userHandler.refresh);
+    this.app.post('/api/v1/users/:id', authMiddleware(jwtConfig), this.userHandler.updateById);
 
     this.app.delete('/api/v1/professions/:id', authMiddleware(jwtConfig), this.professionHandler.deleteById);
     this.app.post('/api/v1/professions', authMiddleware(jwtConfig), this.professionHandler.create);
+    this.app.post('/api/v1/professions/:id', authMiddleware(jwtConfig), this.professionHandler.updateById);
     this.app.get('/api/v1/professions', this.professionHandler.find);
     this.app.get('/api/v1/professions/:id', this.professionHandler.getById);
 
@@ -73,10 +75,16 @@ export class Handler {
       this.professionInterviewHandler.deleteById,
     );
     this.app.post('/api/v1/profession-interview', authMiddleware(jwtConfig), this.professionInterviewHandler.create);
+    this.app.post(
+      '/api/v1/profession-interview/:id',
+      authMiddleware(jwtConfig),
+      this.professionInterviewHandler.updateById,
+    );
     this.app.get('/api/v1/profession-interview/profession/:id', this.professionInterviewHandler.getAllByProfessionId);
 
     this.app.delete('/api/v1/specialties/:id', authMiddleware(jwtConfig), this.specialityHandler.deleteById);
     this.app.post('/api/v1/specialties', authMiddleware(jwtConfig), this.specialityHandler.create);
+    this.app.post('/api/v1/specialties/:id', authMiddleware(jwtConfig), this.specialityHandler.updateById);
     this.app.get('/api/v1/specialties', this.specialityHandler.find);
     this.app.get('/api/v1/specialties/:id', this.specialityHandler.getById);
 
@@ -86,10 +94,16 @@ export class Handler {
       this.specialityInterviewHandler.deleteById,
     );
     this.app.post('/api/v1/speciality-interview', authMiddleware(jwtConfig), this.specialityInterviewHandler.create);
+    this.app.post(
+      '/api/v1/speciality-interview/:id',
+      authMiddleware(jwtConfig),
+      this.specialityInterviewHandler.updateById,
+    );
     this.app.get('/api/v1/speciality-interview/speciality/:id', this.specialityInterviewHandler.getAllBySpecialityId);
 
     this.app.delete('/api/v1/university/:id', authMiddleware(jwtConfig), this.universityHandler.deleteById);
     this.app.post('/api/v1/university', authMiddleware(jwtConfig), this.universityHandler.create);
+    this.app.post('/api/v1/university/:id', authMiddleware(jwtConfig), this.universityHandler.updateById);
     this.app.get('/api/v1/university/speciality/:id', this.universityHandler.getAllBySpecialityId);
 
     this.app.delete(
@@ -98,6 +112,11 @@ export class Handler {
       this.specialityUniversityHandler.deleteById,
     );
     this.app.post('/api/v1/speciality-university', authMiddleware(jwtConfig), this.specialityUniversityHandler.create);
+    this.app.post(
+      '/api/v1/speciality-university/:id',
+      authMiddleware(jwtConfig),
+      this.specialityUniversityHandler.updateById,
+    );
 
     this.app.delete('/api/v1/speciality-track/:id', authMiddleware(jwtConfig), this.specialityTrackHandler.deleteById);
     this.app.post(
@@ -105,6 +124,12 @@ export class Handler {
       authMiddleware(jwtConfig),
       upload.single('file'),
       this.specialityTrackHandler.create,
+    );
+    this.app.post(
+      '/api/v1/speciality-track/:id',
+      authMiddleware(jwtConfig),
+      upload.single('file'),
+      this.specialityTrackHandler.updateById,
     );
     this.app.get('/api/v1/speciality-track/speciality/:id', this.specialityTrackHandler.getAllBySpecialityId);
 

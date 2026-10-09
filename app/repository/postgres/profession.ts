@@ -71,6 +71,22 @@ export class ProfessionRepo implements IProfessionRepository {
     }
   }
 
+  async update(professionId: number, sphereId: number, title: string, description: string): Promise<void> {
+    try {
+      await this.pgConn('professions').where({ id: professionId }).update({
+        sphere_id: sphereId,
+        title,
+        description,
+        updated_at: this.pgConn.fn.now(),
+      });
+    } catch (err: unknown) {
+      if (isUniquePgErrViolation(err)) {
+        throw new ProfessionAlreadyExistsError();
+      }
+      throw err;
+    }
+  }
+
   async getById(id: number): Promise<Profession | null> {
     const row = await this.pgConn<ProfessionRow>('professions')
       .select('id', 'sphere_id', 'title', 'description', 'created_at')

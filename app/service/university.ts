@@ -14,7 +14,11 @@ export class UniversityService implements IUniversityService {
     await this.universityRepo.create(payload);
   }
 
+  async update(id: number, payload: CreateUniversityDTO): Promise<void> {
+    await this.universityRepo.update(id, payload);
+  }
+
   async getAllBySpecialityId(id: number): Promise<University[]> {
-    return await this.getAllBySpecialityId(id);
+    return await this.universityRepo.getAllBySpecialityId(id);
   }
 }

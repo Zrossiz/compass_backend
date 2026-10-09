@@ -28,6 +28,16 @@ export class SpecialityInterviewRepo implements ISpecialityInterviewRepository {
     });
   }
 
+  async update(id: number, payload: CreateSpecialityInterviewDTO): Promise<void> {
+    await this.pgConn('speciality_interviews').where({ id }).update({
+      speciality_id: payload.specialityId,
+      title: payload.title,
+      video_link: payload.videoLink,
+      sort_order: payload.order,
+      updated_at: this.pgConn.fn.now(),
+    });
+  }
+
   async getAllBySpecialityId(id: number): Promise<SpecialityInterview[]> {
     const rows = await this.pgConn<SpecialityInterviewRow>('speciality_interviews')
       .select('id', 'speciality_id', 'title', 'video_link', 'sort_order')

@@ -14,6 +14,10 @@ export class ProfessionInterviewService implements IProfessionInterviewService {
     await this.professionInterviewRepo.create(payload);
   }
 
+  async update(id: number, payload: CreateProfessionInterviewDTO): Promise<void> {
+    await this.professionInterviewRepo.update(id, payload);
+  }
+
   async getAllByProfessionId(id: number): Promise<ProfessionInterview[]> {
     return await this.professionInterviewRepo.getAllByProfessionId(id);
   }

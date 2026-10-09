@@ -58,6 +58,34 @@ export class SpecialityTrackHandler {
     }
   };
 
+  updateById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const id = parseIdParam(req);
+      const parsed = SpecialityTrackDTO.safeParse(req.body);
+      const parsedFile = SpecialityTrackFileDTO.safeParse(req.file);
+      if (!parsed.success || !parsedFile.success) {
+        throw new InvalidBodyError(parsed.error?.message ?? parsedFile.error?.message ?? 'Invalid file');
+      }
+
+      const payload: CreateSpecialityTrackDTO = {
+        specialityId: parsed.data.specialityId,
+        title: parsed.data.title,
+        imageLink: '',
+        sortOrder: parsed.data.sortOrder,
+      };
+
+      await this.specialityTrackService.update(id, payload, parsedFile.data);
+      res.status(204).send();
+    } catch (err: unknown) {
+      if (err instanceof InvalidBodyError || err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      next(err);
+    }
+  };
+
   getAllBySpecialityId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const specialityId = parseIdParam(req);
