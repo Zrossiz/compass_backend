@@ -43,7 +43,7 @@ export class SpecialityRepo implements ISpecialityRepository {
         profession_id: payload.professionId,
         title: payload.title,
         description: payload.description,
-        updated_at: this.pgConn.fn.now(),
+        updated_at: new Date(),
       });
     } catch (err: unknown) {
       if (isUniquePgErrViolation(err)) {

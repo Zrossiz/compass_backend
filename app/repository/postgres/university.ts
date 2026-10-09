@@ -31,7 +31,7 @@ export class UniversityRepo implements IUniversityRepository {
       title: payload.title,
       region: payload.region,
       description: payload.description,
-      updated_at: this.pgConn.fn.now(),
+      updated_at: new Date(),
     });
   }
 

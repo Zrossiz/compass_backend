@@ -34,7 +34,7 @@ export class ProfessionInterviewRepo implements IProfessionInterviewRepository {
       title: payload.title,
       video_link: payload.videoLink,
       sort_order: payload.order,
-      updated_at: this.pgConn.fn.now(),
+      updated_at: new Date(),
     });
   }
 

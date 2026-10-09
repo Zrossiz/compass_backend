@@ -62,7 +62,7 @@ export class ProfessionHandler {
         throw new InvalidBodyError(parsed.error.message);
       }
 
-      await this.professionService.update(id, parsed.data.sphereId, parsed.data.title, parsed.data.description);
+      await this.professionService.update(id, parsed.data);
 
       res.status(204).send();
     } catch (err: unknown) {

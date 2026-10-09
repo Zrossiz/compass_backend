@@ -2,6 +2,7 @@ import { Profession } from 'app/model/profession';
 import { IProfessionRepository } from 'app/repository/postgres/interface';
 import { IProfessionService } from 'app/service/interface';
 import { PaginatedResult, Pagination } from 'app/types/pagination';
+import { CreateProfessionDTO } from 'app/types/profession';
 
 export class ProfessionService implements IProfessionService {
   constructor(private readonly professionsRepo: IProfessionRepository) {}
@@ -22,7 +23,7 @@ export class ProfessionService implements IProfessionService {
     return await this.professionsRepo.search(pattern, pagination, sphereId);
   }
 
-  async update(professionId: number, sphereId: number, title: string, description: string): Promise<void> {
-    await this.professionsRepo.update(professionId, sphereId, title, description);
+  async update(id: number, payload: CreateProfessionDTO): Promise<void> {
+    await this.professionsRepo.update(id, payload);
   }
 }

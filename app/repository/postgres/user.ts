@@ -39,7 +39,7 @@ export class UserRepo implements IUserRepository {
       await this.pgConn('users').where({ id }).update({
         username,
         password,
-        updated_at: this.pgConn.fn.now(),
+        updated_at: new Date(),
       });
     } catch (err) {
       if (isUniquePgErrViolation(err)) {

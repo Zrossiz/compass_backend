@@ -4,6 +4,7 @@ import { Knex } from 'knex';
 import { PaginatedResult, Pagination } from 'app/types/pagination';
 import { ProfessionAlreadyExistsError } from 'app/errors/profession';
 import { isUniquePgErrViolation } from 'app/helpers/isUniqueViolation';
+import { CreateProfessionDTO } from 'app/types/profession';
 
 type ProfessionRow = {
   id: number;
@@ -71,13 +72,13 @@ export class ProfessionRepo implements IProfessionRepository {
     }
   }
 
-  async update(professionId: number, sphereId: number, title: string, description: string): Promise<void> {
+  async update(id: number, payload: CreateProfessionDTO): Promise<void> {
     try {
-      await this.pgConn('professions').where({ id: professionId }).update({
-        sphere_id: sphereId,
-        title,
-        description,
-        updated_at: this.pgConn.fn.now(),
+      await this.pgConn('professions').where({ id }).update({
+        sphere_id: payload.sphereId,
+        title: payload.title,
+        description: payload.description,
+        updated_at: new Date(),
       });
     } catch (err: unknown) {
       if (isUniquePgErrViolation(err)) {

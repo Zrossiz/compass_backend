@@ -44,7 +44,7 @@ export class SphereRepo implements ISphereRepository {
       await this.pgConn('spheres').where({ id }).update({
         title,
         description,
-        updated_at: this.pgConn.fn.now(),
+        updated_at: new Date(),
       });
     } catch (err: unknown) {
       if (isUniquePgErrViolation(err)) {

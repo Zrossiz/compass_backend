@@ -13,6 +13,7 @@ import { SpecialityTrack } from 'app/model/specialityTrack';
 import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { CreateUniversityDTO } from 'app/types/university';
 import { Sphere } from 'app/model/sphere';
+import { CreateProfessionDTO } from 'app/types/profession';
 
 export interface IService {
   readonly user: IUserService;
@@ -37,7 +38,7 @@ export interface IUserService {
 export interface IProfessionService {
   deleteById(id: number): Promise<boolean>;
   create(sphereId: number, title: string, description: string): Promise<void>;
-  update(professionId: number, sphereId: number, title: string, description: string): Promise<void>;
+  update(id: number, payload: CreateProfessionDTO): Promise<void>
   getById(id: number): Promise<Profession | null>;
   search(pattern: string, pagination: Pagination, sphereId?: number): Promise<PaginatedResult<Profession>>;
 }

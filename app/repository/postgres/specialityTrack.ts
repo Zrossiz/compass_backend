@@ -35,7 +35,7 @@ export class SpecialityTrackRepo implements ISpecialityTrackRepository {
       title: payload.title,
       image_link: payload.imageLink,
       sort_order: payload.sortOrder,
-      updated_at: this.pgConn.fn.now(),
+      updated_at: new Date(),
     });
   }
 
