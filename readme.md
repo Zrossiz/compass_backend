@@ -96,17 +96,17 @@ npx knex migrate:make migration_name -x ts --migrations-directory ./migrations/p
 ```
 
 ```sh
-docker compose --env-file .env -f prod/docker-compose.prod.yaml run --rm migrator -a latest
+docker compose --env-file .env -f prod/docker-compose.prod.yaml run --build --rm migrator -a latest
 ```
 
 Применить одну следующую миграцию в production:
 
 ```sh
-docker compose --env-file .env -f prod/docker-compose.prod.yaml run --rm migrator -a up
+docker compose --env-file .env -f prod/docker-compose.prod.yaml run --build --rm migrator -a up
 ```
 
 Откатить одну последнюю миграцию:
 
 ```sh
-docker compose --env-file .env -f prod/docker-compose.prod.yaml run --rm migrator -a down
+docker compose --env-file .env -f prod/docker-compose.prod.yaml run --build --rm migrator -a down
 ```
