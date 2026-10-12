@@ -146,6 +146,17 @@ export class UserHandler {
     }
   };
 
+  getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+   try {
+    res.status(200).json({
+      id: req.user?.id,
+      username: req.user?.username,
+    });
+   } catch (err: unknown) {
+    next(err);
+   } 
+  }
+
   private setAuthCookies(res: Response, tokens: JwtTokens): void {
     const cookieOptions: CookieOptions = {
       httpOnly: true,

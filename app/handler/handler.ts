@@ -62,6 +62,7 @@ export class Handler {
     this.app.post('/api/v1/users/login', this.userHandler.login);
     this.app.post('/api/v1/users/refresh', this.userHandler.refresh);
     this.app.post('/api/v1/users/:id', authMiddleware(jwtConfig), this.userHandler.updateById);
+    this.app.get('/api/v1/users/me', authMiddleware(jwtConfig), this.userHandler.getMe)
 
     this.app.delete('/api/v1/professions/:id', authMiddleware(jwtConfig), this.professionHandler.deleteById);
     this.app.post('/api/v1/professions', authMiddleware(jwtConfig), this.professionHandler.create);
