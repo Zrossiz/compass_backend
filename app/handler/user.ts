@@ -147,15 +147,27 @@ export class UserHandler {
   };
 
   getMe = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-   try {
-    res.status(200).json({
-      id: req.user?.id,
-      username: req.user?.username,
-    });
-   } catch (err: unknown) {
-    next(err);
-   } 
-  }
+    try {
+      res.status(200).json({
+        id: req.user?.id,
+        username: req.user?.username,
+      });
+    } catch (err: unknown) {
+      next(err);
+    }
+  };
+
+  logout = (_req: Request, res: Response): void => {
+    const options: CookieOptions = {
+      httpOnly: true,
+      secure: this.appCfg.env === 'production',
+      sameSite: 'lax',
+      path: '/',
+    };
+    res.clearCookie('accessToken', options);
+    res.clearCookie('refreshToken', options);
+    res.status(204).send();
+  };
 
   private setAuthCookies(res: Response, tokens: JwtTokens): void {
     const cookieOptions: CookieOptions = {

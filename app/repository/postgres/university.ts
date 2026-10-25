@@ -7,7 +7,9 @@ type UniversityRow = {
   id: number;
   title: string;
   region: string;
+  description: string;
   created_at: Date;
+  link_id?: number;
 };
 
 export class UniversityRepo implements IUniversityRepository {
@@ -35,9 +37,23 @@ export class UniversityRepo implements IUniversityRepository {
     });
   }
 
+  async getAll(): Promise<University[]> {
+    const rows = await this.pgConn<UniversityRow>('universities')
+      .select('id', 'title', 'region', 'description', 'created_at')
+      .orderBy('title');
+    return rows.map(this.toUniversity);
+  }
+
   async getAllBySpecialityId(id: number): Promise<University[]> {
     const rows = await this.pgConn<UniversityRow>('universities')
-      .select('universities.id', 'universities.title', 'universities.region', 'universities.created_at')
+      .select(
+        'universities.id',
+        'universities.title',
+        'universities.region',
+        'universities.description',
+        'universities.created_at',
+        'speciality_universities.id as link_id',
+      )
       .innerJoin('speciality_universities', 'universities.id', 'speciality_universities.university_id')
       .where('speciality_universities.speciality_id', id)
       .orderBy('universities.id');
@@ -50,6 +66,8 @@ export class UniversityRepo implements IUniversityRepository {
       id: row.id,
       title: row.title,
       region: row.region,
+      description: row.description,
+      ...(row.link_id !== undefined ? { linkId: row.link_id } : {}),
       createdAt: row.created_at,
     };
 

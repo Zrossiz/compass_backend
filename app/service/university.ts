@@ -18,6 +18,10 @@ export class UniversityService implements IUniversityService {
     await this.universityRepo.update(id, payload);
   }
 
+  async getAll(): Promise<University[]> {
+    return this.universityRepo.getAll();
+  }
+
   async getAllBySpecialityId(id: number): Promise<University[]> {
     return await this.universityRepo.getAllBySpecialityId(id);
   }

@@ -75,6 +75,14 @@ export class UniversityHandler {
     }
   };
 
+  getAll = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      res.status(200).json(await this.universityService.getAll());
+    } catch (err: unknown) {
+      next(err);
+    }
+  };
+
   getAllBySpecialityId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const specialityId = parseIdParam(req);

@@ -66,6 +66,7 @@ export interface ISpecialityService {
 }
 
 export interface IUniversityService {
+  getAll(): Promise<University[]>;
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateUniversityDTO): Promise<void>;
   update(id: number, payload: CreateUniversityDTO): Promise<void>;
