@@ -134,6 +134,7 @@ export class Handler {
       upload.single('file'),
       this.specialityTrackHandler.updateById,
     );
+    this.app.get('/api/v1/speciality-track/:id/image', this.specialityTrackHandler.getImage);
     this.app.get('/api/v1/speciality-track/speciality/:id', this.specialityTrackHandler.getAllBySpecialityId);
 
     this.app.delete('/api/v1/spheres/:id', authMiddleware(jwtConfig), this.sphereHandler.deleteById);

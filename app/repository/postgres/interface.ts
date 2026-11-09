@@ -8,7 +8,7 @@ import { Speciality } from 'app/model/speciality';
 import { SpecialityInterview } from 'app/model/specialityInterview';
 import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';
 import { University } from 'app/model/university';
-import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { CreateSpecialityTrackDTO, UpdateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { SpecialityTrack } from 'app/model/specialityTrack';
 import { CreateUniversityDTO } from 'app/types/university';
 import { Sphere } from 'app/model/sphere';
@@ -64,9 +64,10 @@ export interface ISpecialityRepository {
 }
 
 export interface ISpecialityTrackRepository {
+  getById(id: number): Promise<SpecialityTrack | null>;
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityTrackDTO): Promise<void>;
-  update(id: number, payload: CreateSpecialityTrackDTO): Promise<void>;
+  update(id: number, payload: UpdateSpecialityTrackDTO): Promise<void>;
   getAllBySpecialityId(id: number): Promise<SpecialityTrack[]>;
 }
 

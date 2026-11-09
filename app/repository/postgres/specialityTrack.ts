@@ -1,6 +1,6 @@
 import { SpecialityTrack } from 'app/model/specialityTrack';
 import { ISpecialityTrackRepository } from 'app/repository/postgres/interface';
-import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { CreateSpecialityTrackDTO, UpdateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { Knex } from 'knex';
 
 type SpecialityTrackRow = {
@@ -14,6 +14,11 @@ type SpecialityTrackRow = {
 
 export class SpecialityTrackRepo implements ISpecialityTrackRepository {
   constructor(private readonly pgConn: Knex) {}
+
+  async getById(id: number): Promise<SpecialityTrack | null> {
+    const row = await this.pgConn<SpecialityTrackRow>('speciality_tracks').where({ id }).first();
+    return row ? this.toSpecialityTrack(row) : null;
+  }
 
   async deleteById(id: number): Promise<boolean> {
     const deletedCount = await this.pgConn('speciality_tracks').where({ id }).del();
@@ -29,21 +34,24 @@ export class SpecialityTrackRepo implements ISpecialityTrackRepository {
     });
   }
 
-  async update(id: number, payload: CreateSpecialityTrackDTO): Promise<void> {
-    await this.pgConn('speciality_tracks').where({ id }).update({
-      speciality_id: payload.specialityId,
-      title: payload.title,
-      image_link: payload.imageLink,
-      sort_order: payload.sortOrder,
-      updated_at: new Date(),
-    });
+  async update(id: number, payload: UpdateSpecialityTrackDTO): Promise<void> {
+    await this.pgConn('speciality_tracks')
+      .where({ id })
+      .update({
+        speciality_id: payload.specialityId,
+        title: payload.title,
+        ...(payload.imageLink !== undefined ? { image_link: payload.imageLink } : {}),
+        sort_order: payload.sortOrder,
+        updated_at: new Date(),
+      });
   }
 
   async getAllBySpecialityId(id: number): Promise<SpecialityTrack[]> {
     const rows = await this.pgConn<SpecialityTrackRow>('speciality_tracks')
       .select('id', 'speciality_id', 'title', 'image_link', 'sort_order', 'created_at')
       .where('speciality_id', id)
-      .orderBy('sort_order', 'desc');
+      .orderBy('sort_order', 'asc')
+      .orderBy('id', 'asc');
 
     return rows.map(this.toSpecialityTrack);
   }

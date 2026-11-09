@@ -4,3 +4,5 @@ export type CreateSpecialityTrackDTO = {
   imageLink: string;
   sortOrder: number;
 };
+
+export type UpdateSpecialityTrackDTO = Omit<CreateSpecialityTrackDTO, 'imageLink'> & { imageLink?: string };

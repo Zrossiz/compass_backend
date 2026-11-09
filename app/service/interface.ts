@@ -1,3 +1,4 @@
+import { TrackImage } from 'app/repository/s3/interface';
 import { UserWithJwtTokens } from 'app/model/user';
 import { JwtTokens } from 'app/model/user';
 import { Profession } from 'app/model/profession';
@@ -10,7 +11,7 @@ import { CreateSpecialityInterviewDTO } from 'app/types/specialityInterview';
 import { SpecialityInterview } from 'app/model/specialityInterview';
 import { University } from 'app/model/university';
 import { SpecialityTrack } from 'app/model/specialityTrack';
-import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { CreateSpecialityTrackDTO, UpdateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { CreateUniversityDTO } from 'app/types/university';
 import { Sphere } from 'app/model/sphere';
 import { CreateProfessionDTO } from 'app/types/profession';
@@ -74,9 +75,10 @@ export interface IUniversityService {
 }
 
 export interface ISpecialityTrackService {
+  getImage(id: number): Promise<TrackImage | null>;
   deleteById(id: number): Promise<boolean>;
   create(payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void>;
-  update(id: number, payload: CreateSpecialityTrackDTO, file: Express.Multer.File): Promise<void>;
+  update(id: number, payload: UpdateSpecialityTrackDTO, file?: Express.Multer.File): Promise<boolean>;
   getAllBySpecialityId(id: number): Promise<SpecialityTrack[]>;
 }
 

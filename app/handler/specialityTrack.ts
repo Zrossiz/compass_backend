@@ -1,8 +1,9 @@
+import { pipeline } from 'node:stream/promises';
 import { ISpecialityTrackService } from 'app/service/interface';
 import { NextFunction, Request, Response } from 'express';
 import { InvalidBodyError, InvalidQueryParams } from 'app/errors/validation';
 import { SpecialityTrackDTO, SpecialityTrackFileDTO } from 'app/handler/dto/specialityTrack';
-import { CreateSpecialityTrackDTO } from 'app/types/specialityTrack';
+import { CreateSpecialityTrackDTO, UpdateSpecialityTrackDTO } from 'app/types/specialityTrack';
 import { parseIdParam } from 'app/handler/helper';
 
 export class SpecialityTrackHandler {
@@ -34,7 +35,7 @@ export class SpecialityTrackHandler {
       const parsed = SpecialityTrackDTO.safeParse(req.body);
       const parsedFile = SpecialityTrackFileDTO.safeParse(req.file);
       if (!parsed.success || !parsedFile.success) {
-        throw new InvalidBodyError(parsed.error?.message ?? '');
+        throw new InvalidBodyError(parsed.error?.message ?? parsedFile.error?.message ?? 'Invalid file');
       }
 
       const file: Express.Multer.File = parsedFile.data;
@@ -62,19 +63,22 @@ export class SpecialityTrackHandler {
     try {
       const id = parseIdParam(req);
       const parsed = SpecialityTrackDTO.safeParse(req.body);
-      const parsedFile = SpecialityTrackFileDTO.safeParse(req.file);
+      const parsedFile = SpecialityTrackFileDTO.optional().safeParse(req.file);
       if (!parsed.success || !parsedFile.success) {
         throw new InvalidBodyError(parsed.error?.message ?? parsedFile.error?.message ?? 'Invalid file');
       }
 
-      const payload: CreateSpecialityTrackDTO = {
+      const payload: UpdateSpecialityTrackDTO = {
         specialityId: parsed.data.specialityId,
         title: parsed.data.title,
-        imageLink: '',
         sortOrder: parsed.data.sortOrder,
       };
 
-      await this.specialityTrackService.update(id, payload, parsedFile.data);
+      const updated = await this.specialityTrackService.update(id, payload, parsedFile.data);
+      if (!updated) {
+        res.status(404).json();
+        return;
+      }
       res.status(204).send();
     } catch (err: unknown) {
       if (err instanceof InvalidBodyError || err instanceof InvalidQueryParams) {
@@ -82,6 +86,31 @@ export class SpecialityTrackHandler {
         return;
       }
 
+      next(err);
+    }
+  };
+
+  getImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const image = await this.specialityTrackService.getImage(parseIdParam(req));
+      if (!image) {
+        res.status(404).end();
+        return;
+      }
+      res.setHeader('Content-Type', image.contentType);
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('Cache-Control', 'no-cache');
+      await pipeline(image.stream, res);
+    } catch (err: unknown) {
+      if (res.headersSent) return;
+      if (err instanceof InvalidQueryParams) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      if (err && typeof err === 'object' && 'code' in err && err.code === 'NoSuchKey') {
+        res.status(404).end();
+        return;
+      }
       next(err);
     }
   };
